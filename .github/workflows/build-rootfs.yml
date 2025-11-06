@@ -1,0 +1,66 @@
+name: Winlator Rootfs Build (use BCC)
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      inputGstVersion:
+        description: "输入gstreamer分支版本："
+        required: true
+        default: "1.27.2"
+      inputCustomTag:
+        description: "输入自定义Tag名称："
+        required: true
+        default: "beta11-pre"
+
+env:
+  gstVer: ${{ github.event.inputs.inputGstVersion }}
+
+jobs:
+  BCC:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: BCC
+        run: |
+          echo "gstreamer ${gstVer}"
+          curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
+          sudo tar xf wlt-bcc.tar.xz -C /tmp
+          cd /tmp
+          git clone https://github.com/Waim908/rootfs-custom-winlator.git
+          sudo cp rootfs-custom-winlator/build-rootfs.sh /tmp/archlinux/bin
+          sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
+          # sudo chmod 777 /tmp/archlinux/tmp
+          # cd /tmp/archlinux/tmp
+          # git clone -b ${gstVer} https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
+          # cd /tmp
+          sudo mount --bind /proc archlinux/proc
+          sudo mount --bind /sys archlinux/sys
+          sudo mount --bind /dev archlinux/dev
+          if ! sudo chroot /tmp/archlinux /bin/build-rootfs.sh; then
+            echo "失败"
+            exit 1
+          fi
+          sudo umount -l archlinux/dev
+          sudo umount -l archlinux/sys
+          sudo umount -l archlinux/proc
+
+      # - name: Package
+      #   run: |
+      #     cd /tmp/archlinux/data/data/com.termux/files/usr
+      #     tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: rootfs
+          draft: false
+          prerelease: false
+          tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
+          body: |
+            gstreamer => ${{ github.event.inputs.inputGstVersion }}
+
+          files: /tmp/archlinux/tmp/output/rootfs.tzst
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

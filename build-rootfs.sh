@@ -1,23 +1,45 @@
-# rootfs-custom-winlator
-winlator 11 定制版rootfs
+mkdir /data/data/com.winlator/files/rootfs/
+cd /tmp
+if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
+	exit 1
+fi
+tar -xvf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
+cd /data/data/com.winlator/files/rootfs/etc
+mkdir ca-certificates
+if ! wget https://curl.haxx.se/ca/cacert.pem; then
+	exit 1
+fi
+cd /tmp
+#git clone https://github.com/xiph/flac.git flac-src
+git clone https://github.com/tukaani-project/xz.git xz-src
+git clone https://github.com/xiph/vorbis.git vorbis-src
+#git clone https://github.com/xiph/opus.git opus-src
+git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src
 
-# 参数
-
-<!-- ### FLAC
-```bash
-cmake .. \
--Dprefix=/data/data/com.winlator/files/rootfs/ \
--DBUILD_PROGRAMS=off \
--DBUILD_EXAMPLES=off \
--DBUILD_TESTING=off \
--DBUILD_DOCS=off \
--DBUILD_SHARED_LIBS=on \
--DINSTALL_MANPAGES=off
-``` -->
-FLAC与OPUS均可以通过libav代替
-
-## gstreamer
-```bash
+# Build
+echo "Build and Compile xz(liblzma)"
+cd /tmp/xz-src
+mkdir build
+cd build
+if ! cmake .. -Dprefix=/data/data/com.winlator/files/rootfs/; then
+  exit 1
+fi
+if ! make -j$(nproc); then
+  exit 1
+fi
+make install
+echo "Build and Compile vorbis"
+mkdir build
+cd build
+if ! cmake .. -Dprefix=/data/data/com.winlator/files/rootfs/; then
+  exit 1
+fi
+if ! make -j$(nproc); then
+  exit 1
+fi
+make install
+echo "Build and Compile gstreamer"
+cd /tmp/gst-src
 meson setup builddir \
   --buildtype=release \
   --strip \
@@ -92,8 +114,19 @@ meson setup builddir \
   -Dgst-plugins-bad:opus=disabled \
   -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
   --prefix=/data/data/com.winlator/files/rootfs/
-```
+if [[ ! -d builddir ]]; then
+  exit 1
+fi
+if ! meson compile -C builddir; then
+  exit 1
+fi
+meson install -C builddir
+# package
+echo "Package"
+mkdir /tmp/output
+cd /data/data/com.winlator/files/rootfs/
+if ! tar -I 'zstd -T8' -cvf /tmp/output/rootfs.tzst *; then
+  exit 1
+fi
 
-# CA证书支持
 
-[Mozllia证书](https://curl.haxx.se/ca/cacert.pem)
