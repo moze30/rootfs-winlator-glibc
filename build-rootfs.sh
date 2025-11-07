@@ -29,9 +29,10 @@ git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src
 # Build
 echo "Build and Compile xz(liblzma)"
 cd /tmp/xz-src
+./autogen.sh
 mkdir build
 cd build
-if ! cmake .. -Dprefix=/data/data/com.winlator/files/rootfs/; then
+if ! ../configure -prefix=/data/data/com.winlator/files/rootfs/; then
   exit 1
 fi
 if ! make -j$(nproc); then
