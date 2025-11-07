@@ -49,9 +49,10 @@ fi
 make install
 cd /tmp/vorbis-src
 echo "Build and Compile vorbis"
-mkdir build
-cd build
-if ! cmake . -DBUILD_SHARED_LIBS=1 -Dprefix=/data/data/com.winlator/files/rootfs/; then
+if ! ./autogen.sh; then
+  exit 1
+fi
+if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/; then
   exit 1
 fi
 if ! make -j$(nproc); then
