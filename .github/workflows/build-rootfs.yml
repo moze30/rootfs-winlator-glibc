@@ -13,7 +13,7 @@ on:
       inputXzVersion:
         description: "输入xz版本："
         required: true
-        default: "5.8.1"
+        default: "v5.8.1"
       inputVorbisVersion:
         description: "输入vorbis版本："
         required: true
