@@ -80,14 +80,14 @@ meson setup builddir \
   -Dgst-plugins-bad:fluidsynth=disabled \
   -Dgst-plugins-bad:inter=disabled \
   -Dgst-plugins-bad:x11=enabled \
-  -Dgst-plugins-bad:gl=diabled \
+  -Dgst-plugins-bad:gl=disabled \
   -Dgst-plugins-bad:wayland=disabled \
   -Dgst-plugins-bad:openh264=disabled \
   -Dgst-plugins-bad:hip=disabled \
   -Dgst-plugins-bad:aja=disabled \
   -Dgst-plugins-bad:aes=disabled \
   -Dgst-plugins-bad:dtls=disabled \
-  -Dgst-plugins-bad:hls=diabled \
+  -Dgst-plugins-bad:hls=disabled \
   -Dgst-plugins-bad:curl=disabled \
   -Dgst-plugins-bad:opus=disabled \
   -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/rootfs-custom-winlator)" \
