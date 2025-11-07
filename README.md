@@ -90,7 +90,7 @@ meson setup builddir \
   -Dgst-plugins-bad:hls=diabled \
   -Dgst-plugins-bad:curl=disabled \
   -Dgst-plugins-bad:opus=disabled \
-  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
+  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/rootfs-custom-winlator)" \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
 
@@ -100,7 +100,7 @@ meson setup builddir \
 
 # 其他
 
-[data.tar.zst=>全编码文件(ubuntu)](http://archive.ubuntu.com/ubuntu/pool/universe/g/glibc/locales-all_2.39-0ubuntu8.6_amd64.deb)
+[data.tar.zst=>全编码文件(ubuntu)](http://ports.ubuntu.com/pool/universe/g/glibc/locales-all_2.39-0ubuntu8.6_arm64.deb)
 
 [tzdata-2025b-1-aarch64.pkg.tar.xz=>全时区文件(archlinxu)](https://eu.mirror.archlinuxarm.org/aarch64/core/tzdata-2025b-1-aarch64.pkg.tar.xz)
 
@@ -112,5 +112,7 @@ meson setup builddir \
 # 补全使用的项目
 
 [gstreamer](https://github.com/GStreamer/gstreamer)
+
 [xz](https://github.com/tukaani-project/xz)
+
 [vorbis](https://github.com/xiph/vorbis)

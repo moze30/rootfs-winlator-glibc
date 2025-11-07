@@ -7,15 +7,15 @@ on:
   workflow_dispatch:
     inputs:
       inputGstVersion:
-        description: "输入gstreamer分支版本："
+        description: "输入gstreamer版本："
         required: true
         default: "1.27.2"
       inputXzVersion:
-        description: "输入xz分支版本："
+        description: "输入xz版本："
         required: true
         default: "5.8.1"
       inputVorbisVersion:
-        description: "输入vorbis分支版本："
+        description: "输入vorbis版本："
         required: true
         default: "v1.3.7"
       inputCustomTag:
@@ -40,6 +40,8 @@ jobs:
           cd /tmp
           git clone https://github.com/Waim908/rootfs-custom-winlator.git
           sudo cp rootfs-custom-winlator/build-rootfs.sh /tmp/archlinux/bin
+          mv rootfs-custom-winlator/data.tar.zst /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp

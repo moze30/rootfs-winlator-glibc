@@ -1,9 +1,19 @@
+if [[ ! -f /tmp/init.sh ]]; then
+  exit 1
+else
+  source /tmp/init.sh
+  echo "gst=> $gstVer"
+  echo "vorbis=> $vorbisVer"
+  echo "xz=> $xzVer"
+fi
 mkdir -p /data/data/com.winlator/files/rootfs/
 cd /tmp
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
 	exit 1
 fi
 tar -xvf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
+tar -xvf data.tar.zst -C /data/data/com.winlator/files/rootfs/
+tar -xvf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/etc
 mkdir ca-certificates
 if ! wget https://curl.haxx.se/ca/cacert.pem; then
@@ -11,10 +21,10 @@ if ! wget https://curl.haxx.se/ca/cacert.pem; then
 fi
 cd /tmp
 #git clone https://github.com/xiph/flac.git flac-src
-git clone https://github.com/tukaani-project/xz.git xz-src
-git clone https://github.com/xiph/vorbis.git vorbis-src
+git clone -b $xzVer https://github.com/tukaani-project/xz.git xz-src
+git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src
 #git clone https://github.com/xiph/opus.git opus-src
-git clone -b $1 https://github.com/GStreamer/gstreamer.git gst-src
+git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src
 
 # Build
 echo "Build and Compile xz(liblzma)"
