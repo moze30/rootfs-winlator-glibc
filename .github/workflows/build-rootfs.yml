@@ -49,7 +49,7 @@ jobs:
           # cd /tmp
           echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
           echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
-          echo "export vorbisVer=$vorbosVer" >> /tmp/archlinux/tmp/init.sh
+          echo "export vorbisVer=$vorbisVer" >> /tmp/archlinux/tmp/init.sh
           sudo mount --bind /proc archlinux/proc
           sudo mount --bind /sys archlinux/sys
           sudo mount --bind /dev archlinux/dev
