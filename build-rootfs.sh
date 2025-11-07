@@ -12,7 +12,7 @@ if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/or
 	exit 1
 fi
 tar -xvf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-tar -xvf data.tar.zst -C /data/data/com.winlator/files/rootfs/
+tar -xvf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xvf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/etc
 mkdir ca-certificates

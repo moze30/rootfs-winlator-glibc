@@ -40,7 +40,7 @@ jobs:
           cd /tmp
           git clone https://github.com/Waim908/rootfs-custom-winlator.git
           sudo cp rootfs-custom-winlator/build-rootfs.sh /tmp/archlinux/bin
-          mv rootfs-custom-winlator/data.tar.zst /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/data.tar.xz /tmp/archlinux/tmp
           mv rootfs-custom-winlator/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
