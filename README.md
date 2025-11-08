@@ -56,9 +56,7 @@ meson setup builddir \
   -Dgst-plugins-base:alsa=enabled \
   -Dgst-plugins-base:pango=disabled \
   -Dgst-plugins-base:x11=enabled \
-  -Dgst-plugins-base:gl=enabled \
-  -Dgst-plugins-base:gl_api=opengl \
-  -Dgst-plugins-base:gl_platform=glx \
+  -Dgst-plugins-base:gl=disabled \
   -Dgst-plugins-base:opus=disabled \
   -Dgst-plugins-bad:androidmedia=disabled \
   -Dgst-plugins-bad:rtmp=disabled \
@@ -66,9 +64,7 @@ meson setup builddir \
   -Dgst-plugins-bad:zbar=disabled \
   -Dgst-plugins-bad:webp=disabled \
   -Dgst-plugins-bad:kms=disabled \
-  -Dgst-plugins-bad:vulkan=enabled \
-  -Dgst-plugins-bad:vulkan-windowing=x11 \
-  -Dgst-plugins-bad:vulkan-video=enabled \
+  -Dgst-plugins-bad:vulkan=disabled \
   -Dgst-plugins-bad:dash=disabled \
   -Dgst-plugins-bad:analyticsoverlay=disabled \
   -Dgst-plugins-bad:nvcodec=disabled \
@@ -90,7 +86,7 @@ meson setup builddir \
   -Dgst-plugins-bad:hls=disabled \
   -Dgst-plugins-bad:curl=disabled \
   -Dgst-plugins-bad:opus=disabled \
-  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/rootfs-custom-winlator)" \
+  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
 
