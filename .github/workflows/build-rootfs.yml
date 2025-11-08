@@ -14,10 +14,10 @@ on:
         description: "输入xz版本："
         required: true
         default: "v5.8.1"
-      inputVorbisVersion:
-        description: "输入vorbis版本："
-        required: true
-        default: "v1.3.7"
+      # inputVorbisVersion:
+      #   description: "输入vorbis版本："
+      #   required: true
+      #   default: "v1.3.7"
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true

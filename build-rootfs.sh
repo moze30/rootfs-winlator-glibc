@@ -3,7 +3,7 @@ if [[ ! -f /tmp/init.sh ]]; then
 else
   source /tmp/init.sh
   echo "gst=> $gstVer"
-  echo "vorbis=> $vorbisVer"
+  # echo "vorbis=> $vorbisVer"
   echo "xz=> $xzVer"
 fi
 pacman -R --noconfirm libvorbis flac lame
@@ -27,9 +27,9 @@ rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 if ! git clone -b $xzVer https://github.com/tukaani-project/xz.git xz-src; then
   exit 1
 fi
-if ! git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src; then
-  exit 1
-fi
+# if ! git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src; then
+#   exit 1
+# fi
 #git clone https://github.com/xiph/opus.git opus-src
 if ! git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src; then
   exit 1
@@ -48,18 +48,18 @@ if ! make -j$(nproc); then
   exit 1
 fi
 make install
-cd /tmp/vorbis-src
-echo "Build and Compile vorbis"
-if ! ./autogen.sh; then
-  exit 1
-fi
-if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/; then
-  exit 1
-fi
-if ! make -j$(nproc); then
-  exit 1
-fi
-make install
+# cd /tmp/vorbis-src
+# echo "Build and Compile vorbis"
+# if ! ./autogen.sh; then
+#   exit 1
+# fi
+# if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/; then
+#   exit 1
+# fi
+# if ! make -j$(nproc); then
+#   exit 1
+# fi
+# make install
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir \
