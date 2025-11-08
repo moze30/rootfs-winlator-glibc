@@ -76,6 +76,9 @@ jobs:
           body: |
             gstreamer => ${{ github.event.inputs.inputGstVersion }}
 
-          files: /tmp/archlinux/tmp/output/rootfs.tzst
+          files: |
+            /tmp/archlinux/tmp/output/output-lite.xz
+            /tmp/archlinux/tmp/output/output-full.xz
+            /tmp/archlinux/tmp/output/rootfs.tzst
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
