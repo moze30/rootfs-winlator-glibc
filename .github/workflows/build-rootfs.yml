@@ -75,7 +75,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: rootfs
+          name: rootfs-${{ github.event.inputs.inputCustomTag }}
           draft: false
           prerelease: false
           tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
@@ -83,8 +83,8 @@ jobs:
             gstreamer => ${{ github.event.inputs.inputGstVersion }}
 
           files: |
-            /tmp/archlinux/tmp/output/output-lite.xz
-            /tmp/archlinux/tmp/output/output-full.xz
+            /tmp/archlinux/tmp/output/output-lite.tar.xz
+            /tmp/archlinux/tmp/output/output-full.tar.xz
             /tmp/archlinux/tmp/output/rootfs.tzst
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

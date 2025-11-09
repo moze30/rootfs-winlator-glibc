@@ -170,7 +170,7 @@ mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
 create_ver_txt
-if ! tar -I 'xz -T8' -cf /tmp/output/output-lite.xz *; then
+if ! tar -I 'xz -T8' -cf /tmp/output/output-lite.tar.xz *; then
   exit 1
 fi
 cd /tmp
@@ -178,7 +178,7 @@ tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
-if ! tar -I 'xz -T8' -cf /tmp/output/output-full.xz *; then
+if ! tar -I 'xz -T8' -cf /tmp/output/output-full.tar.xz *; then
   exit 1
 fi
 rm -rf /data/data/com.winlator/files/rootfs/*/
