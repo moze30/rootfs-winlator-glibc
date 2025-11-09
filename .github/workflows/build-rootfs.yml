@@ -26,7 +26,7 @@ on:
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
   xzVer: ${{ github.event.inputs.inputXzVersion }}
-  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+  # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
 
 jobs:
   BCC:
