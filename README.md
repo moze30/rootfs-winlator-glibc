@@ -113,7 +113,7 @@ meson setup builddir \
   -Dgst-plugins-bad:opus=disabled \
   -Dgst-plugins-bad:webrtc=disabled \
   -Dgst-plugins-bad:webrtcdsp=disabled \
-  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/rootfs-custom-winlator)" \
+  -Dpackage-origin="[rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)" \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
 
