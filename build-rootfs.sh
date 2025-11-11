@@ -44,6 +44,7 @@ if [[ ! -f /tmp/init.sh ]]; then
   exit 1
 else
   cat /tmp/init.sh
+  source /tmp/init.sh
 fi
 pacman -R --noconfirm libvorbis flac lame
 mkdir -p /data/data/com.winlator/files/rootfs/
