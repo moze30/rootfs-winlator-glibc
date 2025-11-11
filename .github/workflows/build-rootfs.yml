@@ -70,7 +70,7 @@ jobs:
           sudo mount --bind /proc archlinux/proc
           sudo mount --bind /sys archlinux/sys
           sudo mount --bind /dev archlinux/dev
-          if ! sudo chroot /tmp/archlinux /bin/build-rootfs.sh; then
+          if ! sudo chroot /tmp/archlinux /bin/bash -x /bin/build-rootfs.sh; then
             echo "失败"
             exit 1
           fi
