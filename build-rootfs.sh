@@ -94,8 +94,9 @@ pip install mako --break-system-package
 cd /tmp/xkbcommon-src
 
 meson setup builddir \
+  --buildtype=release \
+  --strip \
   -Denable-xkbregistry=false \
-  -Denable-bash-completion=false \
   -Denable-wayland=false \
   -Denable-tools=false \
   -Denable-bash-completion=false \
@@ -106,7 +107,8 @@ meson install -C builddir
 cd /tmp/mangohud-src
 
 meson setup builddir \
-  -Ddynamic_string_tokens=false \
+  --buildtype=release \
+  --strip \
   -Dwith_xnvctrl=disabled \
   -Dwith_wayland=disabled \
   -Dwith_nvml=disabled \
