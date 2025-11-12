@@ -231,7 +231,7 @@ if ! tar -I 'xz -T$(nproc)' -cf /tmp/output/output-lite.tar.xz .; then
   exit 1
 fi
 cd /tmp
-tar -I 'unxz -T$(nproc)' -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
+tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
@@ -241,8 +241,8 @@ fi
 cd /tmp
 rm -rf /data/data/com.winlator/files/rootfs/
 create_rootfs_dir
-tar -I 'unzstd -T$(nproc)' -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-tar -xf /tmp/output/output-full.xz -C /data/data/com.winlator/files/rootfs/
+tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
+tar -xf /tmp/output/output-full.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
 rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
