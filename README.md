@@ -120,7 +120,6 @@ meson setup builddir \
 ## MangoHud
 ```bash
 meson setup builddir \
-  -Ddynamic_string_tokens=false \
   -Dwith_xnvctrl=disabled \
   -Dwith_wayland=disabled \
   -Dwith_nvml=disabled \
@@ -171,7 +170,3 @@ bilibili:
 [xz](https://github.com/tukaani-project/xz)
 
 [xkbcommon](https://github.com/xkbcommon/libxkbcommon)
-
-# 以下使用gst子项目完成构建
-
-~~[vorbis](https://github.com/xiph/vorbis)~~
