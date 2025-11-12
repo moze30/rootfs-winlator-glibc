@@ -13,6 +13,10 @@ export RootDirectories=(
   usr/local
 )
 apply_patch() {
+  if [[ ! -d /tmp/patches ]]; then
+    echo "pataches dir is not fonund!"
+    exit 1
+  fi
   for i in `ls /tmp/patches/$1/$2`; do
     if ! patch -p1 < /tmp/patches/$1/$2/$i; then
       echo "Apply $i for $1/$2 failed"
