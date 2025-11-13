@@ -24,7 +24,7 @@ export meson_general_arg=(
   --sysconfdir=/data/data/com.winlator/files/rootfs/etc
   --libexecdir=/data/data/com.winlator/files/rootfs/usr/libexec
   --localstatedir=/data/data/com.winlator/files/rootfs/var
-  --datadir=/data/data/com.winlator/files/usr/share
+  --datadir=/data/data/com.winlator/files/rootfs/usr/share
   --includedir=/data/data/com.winlator/files/rootfs/usr/include
   --sbindir=/data/data/com.winlator/files/rootfs/usr/sbin
 )
@@ -33,12 +33,16 @@ apply_patch() {
     echo "pataches dir is not fonund!"
     exit 1
   fi
-  for i in `ls /tmp/patches/$1/$2`; do
-    if ! patch -p1 < /tmp/patches/$1/$2/$i; then
-      echo "Apply $i for $1/$2 failed"
-      exit 1
-    fi
-  done
+  if [[ -d /tmp/patches/$1/$2 ]]; then
+    for i in `ls /tmp/patches/$1/$2`; do
+      if ! patch -p1 < /tmp/patches/$1/$2/$i; then
+        echo "Apply $i for $1/$2 failed"
+        exit 1
+      fi
+    done
+  else
+    echo "No Version Patch files=>$1/$2"
+  fi
 }
 patchelf_fix() {
   LD_RPATH=/data/data/com.winlator/files/rootfs/lib
