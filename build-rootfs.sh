@@ -149,7 +149,7 @@ cd /tmp/xz-src
 ./autogen.sh
 mkdir build
 cd build
-if ! ../configure -prefix=/data/data/com.winlator/files/rootfs/; then
+if ! ../configure -prefix=/data/data/com.winlator/files/rootfs/usr; then
   exit 1
 fi
 if ! make -j$(nproc); then
