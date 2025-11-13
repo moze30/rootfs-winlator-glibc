@@ -2,8 +2,6 @@ export TZ=Asia/Shanghai
 export RootDirectories=(
   etc
   home
-  include
-  libexec
   opt
   tmp
   var
@@ -11,6 +9,24 @@ export RootDirectories=(
   usr/lib
   usr/share
   usr/local
+  usr/libexec
+  usr/include
+  usr/games
+  usr/src
+  usr/sbin
+)
+export meson_general_arg=(
+  --buildtype=release
+  --strip
+  --prefix=/data/data/com.winlator/files/rootfs/usr
+  --libdir=/data/data/com.winlator/files/rootfs/usr/lib
+  --bindir=/data/data/com.winlator/files/rootfs/usr/bin
+  --sysconfdir=/data/data/com.winlator/files/rootfs/etc
+  --libexecdir=/data/data/com.winlator/files/rootfs/usr/libexec
+  --localstatedir=/data/data/com.winlator/files/rootfs/var
+  --datadir=/data/data/com.winlator/files/usr/share
+  --includedir=/data/data/com.winlator/files/rootfs/usr/include
+  --sbindir=/data/data/com.winlator/files/rootfs/usr/sbin
 )
 apply_patch() {
   if [[ ! -d /tmp/patches ]]; then
@@ -58,8 +74,8 @@ else
   source /tmp/init.sh
 fi
 pacman -R --noconfirm libvorbis flac lame
-mkdir -p /data/data/com.winlator/files/rootfs/
 create_rootfs_dir() {
+  mkdir -p /data/data/com.winlator/files/rootfs/
   nowPath=$(pwd)
   rootfsDir=/data/data/com.winlator/files/rootfs/
   for i in ${!RootDirectories[@]}; do
@@ -68,7 +84,7 @@ create_rootfs_dir() {
   cd $rootfsDir
   ln -sf usr/bin
   ln -sf usr/lib
-  ln -sf usr/share
+  ln -sf usr/sbin
   cd $nowPath
 }
 create_rootfs_dir
@@ -105,15 +121,12 @@ pip install mako --break-system-package
 
 cd /tmp/xkbcommon-src
 
-meson setup builddir \
-  --buildtype=release \
-  --strip \
+meson setup builddir ${meson_general_arg[@]} \
   -Dbash-completion-path=false \
   -Denable-xkbregistry=false \
   -Denable-wayland=false \
   -Denable-tools=false \
-  -Denable-bash-completion=false \
-  --prefix=/data/data/com.winlator/files/rootfs/
+  -Denable-bash-completion=false || exit 1
 meson compile -C builddir || exit 1
 meson install -C builddir
 
@@ -121,15 +134,12 @@ cd /tmp/mangohud-src
 
 apply_patch mangohud $mangohudVer
 
-meson setup builddir \
-  --buildtype=release \
-  --strip \
+meson setup builddir ${meson_general_arg[@]} \
   -Ddynamic_string_tokens=false \
   -Dwith_xnvctrl=disabled \
   -Dwith_wayland=disabled \
   -Dwith_nvml=disabled \
-  -Dinclude_doc=false \
-  --prefix=/data/data/com.winlator/files/rootfs/ || exit 1
+  -Dinclude_doc=false || exit 1
 meson compile -C builddir || exit 1
 meson install -C builddir
 # Build
@@ -159,9 +169,7 @@ make install
 # make install
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
-meson setup builddir \
-  --buildtype=release \
-  --strip \
+meson setup builddir ${meson_general_arg[@]} \
   -Dgst-full-target-type=shared_library \
   -Dintrospection=disabled \
   -Dgst-full-libraries=app,video,player \
@@ -229,8 +237,7 @@ meson setup builddir \
   -Dgst-plugins-bad:opus=disabled \
   -Dgst-plugins-bad:webrtc=disabled \
   -Dgst-plugins-bad:webrtcdsp=disabled \
-  -Dpackage-origin="[rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)" \
-  --prefix=/data/data/com.winlator/files/rootfs/ || exit 1
+  -Dpackage-origin="[rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)" || exit 1
 if [[ ! -d builddir ]]; then
   exit 1
 fi
@@ -265,6 +272,6 @@ cd /data/data/com.winlator/files/rootfs/
 rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
 rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 create_ver_txt
-if ! tar -I 'zstd -T$(nproc)' -cf /tmp/output/rootfs.tzst .; then
+if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/rootfs.tzst .; then
   exit 1
 fi
