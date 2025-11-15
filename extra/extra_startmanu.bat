@@ -1,0 +1,1 @@
+mklink /D "C:\ProgramData\Microsoft\Windows\Start Menu\99.extra" "Z:\extra"

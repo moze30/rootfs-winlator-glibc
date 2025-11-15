@@ -278,13 +278,13 @@ tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 if [[ -d fonts ]]; then
   cp -r -p fonts /data/data/com.winlator/files/rootfs/usr/share
-  if [[ -d /data/data/com.winlator/files/rootfs/usr/share/fonts ]]; then
-    echo "fonts install finsh"
-  else
-    echo "fonts install failed"
-  fi
 else
   echo "fonts no such dir"
+fi
+if [[ -d extra ]]; then
+  cp -r -p extra /data/data/com.winlator/files/rootfs/
+else
+  echo "extra no such dir"
 fi
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
