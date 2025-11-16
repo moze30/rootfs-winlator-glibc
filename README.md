@@ -62,6 +62,10 @@ Any modified third-party versions of Winlator distributed (i.e., distribution ve
 
 声明变量```GST_DEBUG```值为```4```，如果没有输出则是调用其他解码，请在调试中✓上```quartz```,```mfplat```或```dxva2```
 
+# MangoHud调试
+
+声明变量```MANGOHUD_LOG_LEVEL```，值可以为```off```,```err```,```info```<=编译默认为info,```debug```<=推荐，要不然看不到什么有用的信息
+
 # 关于视频解码
 
 对于unityH264游戏，经过测试此版本已经可以相当流畅的播放和解码h264视频而不出现卡顿卡死或者黑屏现象，包括*声音*也是正常的，但是在此之前你必须使用原版自带的wine并在环境变量设置里启用```WINE_DO_NOT_CREATE_DXGI_DEVICE_MANAGER```这个变量，如果没有请自行添加，值为**1**，此变量只存在原版和应用相关补丁的wine，请关注我的[**wine-winlator**](https://github.com/Waim908/wine-winlator)仓库，后续会推出相应的版本
