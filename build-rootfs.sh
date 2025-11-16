@@ -126,6 +126,10 @@ else
   echo "Use Winlator Glibc mangohud"
 fi
 
+git clone -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src || exit 1
+
+git clone -b $flacVer https://github.com/xiph/flac.git flac-src || exit 1
+
 pip install mako --break-system-package
 
 cd /tmp/xkbcommon-src
@@ -173,18 +177,41 @@ if ! make -j$(nproc); then
   exit 1
 fi
 make install
-# cd /tmp/vorbis-src
-# echo "Build and Compile vorbis"
-# if ! ./autogen.sh; then
-#   exit 1
-# fi
-# if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/; then
-#   exit 1
-# fi
-# if ! make -j$(nproc); then
-#   exit 1
-# fi
-# make install
+
+# mp3lame https://sourceforge.net/projects/lame/files/latest/download
+
+cd /tmp/lame-3.100
+./configure --prefix=/data/data/com.winlator/files/rootfs/usr/ || exit 1
+make -j$(nproc) || exit 1
+make install
+
+# FLAC
+
+cd /tmp/flac-src
+if ! ./autogen.sh; then
+  exit 1
+fi
+if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/usr/; then
+  exit 1
+fi
+if ! make -j$(nproc); then
+  exit 1
+fi
+
+# Vorbis
+
+cd /tmp/vorbis-src
+echo "Build and Compile vorbis"
+if ! ./autogen.sh; then
+  exit 1
+fi
+if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/usr/; then
+  exit 1
+fi
+if ! make -j$(nproc); then
+  exit 1
+fi
+make install
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
@@ -281,11 +308,27 @@ if [[ -d fonts ]]; then
 else
   echo "fonts no such dir"
 fi
+# mkdir -p /data/data/com.winlator/files/rootfs/extra-res/gecko-64
+# mkdir -p /data/data/com.winlator/files/rootfs/extra-res/gecko-32
+# mkdir -p /data/data/com.winlator/files/rootfs/extra-res/mono-32
+# cd /data/data/com.winlator/files/rootfs/extra-res/gecko-64
+# wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi || exit 1
+# cd /data/data/com.winlator/files/rootfs/extra-res/gecko-32
+# wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86.msi || exit 1
+# cd /data/data/com.winlator/files/rootfs/extra-res/mono-32
+# wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi
+
 if [[ -d extra ]]; then
   cp -r -p extra /data/data/com.winlator/files/rootfs/
 else
   echo "extra no such dir"
 fi
+# cat > /data/data/com.winlator/files/rootfs/extra/mono32-${monoVer}-setup.bat << EOF
+# msiexec /qn /i "Z:\extra-res\mono-32\wine-mono-${monoVer}-x86.msi"
+# EOF
+# cat > /data/data/com.winlator/files/rootfs/extra/gecko64-${geckoVer}-setup.bat << EOF
+# msiexec /qn /i "Z:\extra-res\gecko-64\wine-gecko-${geckoVer}-x86_64.msi"
+# EOF
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
 if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full.tar.xz .; then

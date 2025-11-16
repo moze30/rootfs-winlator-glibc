@@ -202,7 +202,7 @@ bilibili:
 
 # 补全使用的项目
 
-#### 软件
+#### 软件与依赖
 
 [mangohud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)
 
@@ -215,6 +215,12 @@ bilibili:
 [xkbcommon](https://github.com/xkbcommon/libxkbcommon)
 
 [glxgears(GL渲染测试)](https://github.com/the-r3dacted/windows-glxgears-built)
+
+[mp3lame](https://lame.sourceforge.io)
+
+[flac](https://github.com/xiph/flac)
+
+[vorbis](https://github.com/xiph/vorbis)
 
 #### 字体(winlator高版本强制注册Fontlink无需修改注册表)
 

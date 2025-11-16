@@ -14,10 +14,14 @@ on:
         description: "输入xz版本："
         required: true
         default: "v5.8.1"
-      # inputVorbisVersion:
-      #   description: "输入vorbis版本："
-      #   required: true
-      #   default: "v1.3.7"
+      inputVorbisVersion:
+        description: "输入vorbis版本："
+        required: true
+        default: "v1.3.7"
+      inputFlacVersion:
+        description: "输入flac版本："
+        required: true
+        default: "1.5.0"
       inputXkbcommonVersion:
         description: "输入xkbcommon的版本："
         required: true
@@ -37,7 +41,8 @@ env:
   xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
   mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
   customTag: ${{ github.event.inputs.inputCustomTag }}
-  # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+  flacVer: ${{ github.event.inputs.inputFlacVersion }}
 
 jobs:
   BCC:
@@ -57,6 +62,7 @@ jobs:
           mv rootfs-custom-winlator/mangohud.tar.xz /tmp/archlinux/tmp
           mv rootfs-custom-winlator/fonts /tmp/archlinux/tmp
           mv rootfs-custom-winlator/extra /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/lame-3.100 /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp
@@ -68,6 +74,8 @@ jobs:
           export xkbcommonVer=$xkbcommonVer
           export mangohudVer=$mangohudVer
           export customTag=$customTag
+          export flacVer=$flacVer
+          export vorbisVer=$vorbisVer
           EOF
           # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
           # echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
@@ -97,6 +105,9 @@ jobs:
           tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
           body: |
               xz=> ${{ github.event.inputs.inputXzVersion }}
+              libmp3lame=> 3.100
+              libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
+              libvorbis=> ${{ github.event.inputs.inputVorbisVersion }}
               gstreamer=> ${{ github.event.inputs.inputGstVersion }}
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
