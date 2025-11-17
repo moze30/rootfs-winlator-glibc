@@ -197,6 +197,7 @@ fi
 if ! make -j$(nproc); then
   exit 1
 fi
+make install
 
 # Vorbis
 
@@ -212,6 +213,7 @@ if ! make -j$(nproc); then
   exit 1
 fi
 make install
+
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
