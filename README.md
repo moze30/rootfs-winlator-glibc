@@ -192,7 +192,7 @@ bilibili:
 
 [tzdata-2025b-1-aarch64.pkg.tar.xz=>全时区文件(archlinxu)](https://eu.mirror.archlinuxarm.org/aarch64/core/tzdata-2025b-1-aarch64.pkg.tar.xz)
 
-# 感谢
+# 由衷的感谢以下所有项目及其开发者们所作出的努力
 
 [hostei2-winlator修改版，支持终端方便调试](https://space.bilibili.com/39433311)
 
@@ -200,9 +200,7 @@ bilibili:
 
 [termux-package](https://github.com/termux/termux-packages)
 
-# 补全使用的项目
-
-#### 软件与依赖
+#### Root filesystem 依赖与软件环境
 
 [mangohud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)
 
@@ -214,16 +212,26 @@ bilibili:
 
 [xkbcommon](https://github.com/xkbcommon/libxkbcommon)
 
-[glxgears(GL渲染测试)](https://github.com/the-r3dacted/windows-glxgears-built)
-
 [mp3lame](https://lame.sourceforge.io)
 
 [flac](https://github.com/xiph/flac)
 
 [vorbis](https://github.com/xiph/vorbis)
 
+#### Wine/windows环境
+
+[glxgears](https://github.com/the-r3dacted/windows-glxgears-built)
+
+[busybox](https://github.com/rmyorston/busybox-w32)
+
+[jq](https://github.com/jqlang/jq)
+
+[wget](https://eternallybored.org/misc/wget)
+
+[zenity](https://github.com/ncruces/zenity)
+
 #### 字体(winlator高版本强制注册Fontlink无需修改注册表)
 
 [msyh/simsun](https://github.com/CroesusSo/msyh)
 
-[msyh](https://github.com/fernvenue/microsoft-yahei/tree/master)
+[msyh](https://github.com/fernvenue/microsoft-yahei)

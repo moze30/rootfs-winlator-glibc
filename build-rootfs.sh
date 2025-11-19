@@ -310,27 +310,24 @@ if [[ -d fonts ]]; then
 else
   echo "fonts no such dir"
 fi
-# mkdir -p /data/data/com.winlator/files/rootfs/extra-res/gecko-64
-# mkdir -p /data/data/com.winlator/files/rootfs/extra-res/gecko-32
-# mkdir -p /data/data/com.winlator/files/rootfs/extra-res/mono-32
-# cd /data/data/com.winlator/files/rootfs/extra-res/gecko-64
-# wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi || exit 1
-# cd /data/data/com.winlator/files/rootfs/extra-res/gecko-32
-# wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86.msi || exit 1
-# cd /data/data/com.winlator/files/rootfs/extra-res/mono-32
-# wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi
+
+#########
+# Extra #
+#########
 
 if [[ -d extra ]]; then
   cp -r -p extra /data/data/com.winlator/files/rootfs/
 else
   echo "extra no such dir"
 fi
-# cat > /data/data/com.winlator/files/rootfs/extra/mono32-${monoVer}-setup.bat << EOF
-# msiexec /qn /i "Z:\extra-res\mono-32\wine-mono-${monoVer}-x86.msi"
-# EOF
-# cat > /data/data/com.winlator/files/rootfs/extra/gecko64-${geckoVer}-setup.bat << EOF
-# msiexec /qn /i "Z:\extra-res\gecko-64\wine-gecko-${geckoVer}-x86_64.msi"
-# EOF
+mkdir /data/data/com.winlator/files/rootfs/extra-res
+# 1.21.4
+wget https://eternallybored.org/misc/wget/${wgetVer}/64/wget.exe
+# latest
+wget https://frippery.org/files/busybox/busybox64u.exe
+# jq-1.8.1
+wget https://github.com/jqlang/jq/releases/download/${jqVer}/jq-windows-amd64.exe
+
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
 if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full.tar.xz .; then

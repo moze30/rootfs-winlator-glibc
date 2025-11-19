@@ -1,0 +1,4 @@
+busybox
+jq
+wget
+cmd
