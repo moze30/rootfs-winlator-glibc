@@ -118,6 +118,8 @@ jobs:
           tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
           body: |
               xz=> ${{ github.event.inputs.inputXzVersion }}
+              monoVer=> ${{ github.event.inputs.inputMonoVersion }}
+              geckoVer=> ${{ github.event.inputs.inputGeckoVersion }}
               libmp3lame=> 3.100
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
               libvorbis=> ${{ github.event.inputs.inputVorbisVersion }}
