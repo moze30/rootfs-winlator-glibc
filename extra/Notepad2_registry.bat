@@ -1,0 +1,1 @@
+reg add "HKCU\Software\Classes\txtfile\shell\open\command" /ve /t REG_SZ /d "\"Z:\extra-res\notepad2\Notepad2.exe\" \"%%1\"" /f

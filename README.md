@@ -13,13 +13,17 @@ winlator 11 定制版rootfs，这是一个用于补全原版winlator的项目，
 
 # 声明
 
-任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复
+任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复。
 
 Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
 
 <a id='use'></a>
 
 # 使用
+
+已经添加了所有Linux语言的编码和微软雅黑等字体补全，对于一些冷门未翻译游戏理论上可能存在效果？总之无论你是任何国家的用户可以切换对应的编码来改变wine的显示语言和字体乱码的一些问题
+
+同时添加了全球的时区文件，你可以通过```TZ```变量来完美校准wine的显示时间
 
 无论你使用任何修改版本（Winlator 11 beta+ 其他版本未测试），只需要替换掉apk包assets文件夹内的```rootfs.tzst```文件就能享受相比于原版更好的解码效果，如果你不想破坏改版的rootfs结构，请自行解包并解压此仓库Releases的```output-full.tar.xz```(包含了完整的时区文件与所有语言的utf-8编码) 或者```output-lite.tar.xz```（不再包含编码与时区文件）到rootfs，然后再使用```zstd```来压缩为rootfs.tzst并自行添加到apk里面
 
@@ -222,13 +226,7 @@ bilibili:
 
 [glxgears](https://github.com/the-r3dacted/windows-glxgears-built)
 
-[busybox](https://github.com/rmyorston/busybox-w32)
-
-[jq](https://github.com/jqlang/jq)
-
-[wget](https://eternallybored.org/misc/wget)
-
-[zenity](https://github.com/ncruces/zenity)
+[Notepad2](https://github.com/XhmikosR/notepad2-mod)
 
 #### 字体(winlator高版本强制注册Fontlink无需修改注册表)
 

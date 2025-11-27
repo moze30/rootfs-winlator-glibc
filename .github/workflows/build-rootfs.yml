@@ -27,9 +27,17 @@ on:
         required: true
         default: "xkbcommon-1.13.0"
       inputMangohudVersion:
-        description: "请输入MangoHud版本："
+        description: "输入MangoHud版本："
         required: true
         default: "cmod"
+      inputMonoVersion:
+        description: "mono版本："
+        required: true
+        default: "10.3.0"
+      inputGeckoVersion:
+        description: "gecko：版本："
+        required: true
+        default: "2.47.4"
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
@@ -43,6 +51,8 @@ env:
   customTag: ${{ github.event.inputs.inputCustomTag }}
   vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
+  monoVer: ${{ github.event.inputs.inputMonoVersion }}
+  geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
 
 jobs:
   BCC:
@@ -63,6 +73,7 @@ jobs:
           mv rootfs-custom-winlator/fonts /tmp/archlinux/tmp
           mv rootfs-custom-winlator/extra /tmp/archlinux/tmp
           mv rootfs-custom-winlator/lame-3.100 /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/extra-res /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp
@@ -76,6 +87,8 @@ jobs:
           export customTag=$customTag
           export flacVer=$flacVer
           export vorbisVer=$vorbisVer
+          export monoVer=$monoVer
+          export geckoVer=$geckoVer
           EOF
           # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
           # echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh

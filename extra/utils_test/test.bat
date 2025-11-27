@@ -1,4 +1,0 @@
-busybox
-jq
-wget
-cmd

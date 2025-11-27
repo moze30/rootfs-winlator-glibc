@@ -67,7 +67,7 @@ Version:
 Repo:
   [Waim908/rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)
 Others:
-  [CN]任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复
+  [CN]任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复。
   [EN]Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
 EOF
 }
@@ -320,13 +320,29 @@ if [[ -d extra ]]; then
 else
   echo "extra no such dir"
 fi
-mkdir /data/data/com.winlator/files/rootfs/extra-res
-# 1.21.4
-wget https://eternallybored.org/misc/wget/${wgetVer}/64/wget.exe
-# latest
-wget https://frippery.org/files/busybox/busybox64u.exe
-# jq-1.8.1
-wget https://github.com/jqlang/jq/releases/download/${jqVer}/jq-windows-amd64.exe
+
+if [[ -d extra-res ]]; then
+  cp -r -p extra-res /data/data/com.winlator/files/rootfs/
+  cd /data/data/com.winlator/files/rootfs/extra-res/
+  # 10.3.0 https://github.com/wine-mono/wine-mono/releases/download/wine-mono-10.3.0/wine-mono-10.3.0-x86.msi
+  wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi || exit 1
+  # https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86_64.msi
+  wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86.msi
+  wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi
+else
+  echo "extra-res no such dir"
+fi
+
+cd /data/data/com.winlator/files/rootfs/extra
+cat > Setup86-gecko.bat << EOF
+msiexec /i "Z:\extra-res\wine-mono-${monoVer}-x86.msi"
+EOF
+
+cat > Setup86-gecko.bat << EOF
+msiexec /i "Z:\extra-res\wine-gecko-${geckoVer}-x86_64.msi"
+EOF
+
+cat > Setup86_64-gecko
 
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
