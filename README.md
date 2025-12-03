@@ -230,6 +230,8 @@ bilibili:
 
 [d7vk](https://github.com/WinterSnowfall/d7vk)
 
+[7zip](https://www.7-zip.org/)
+
 #### 字体(winlator高版本强制注册Fontlink无需修改注册表)
 
 [msyh/simsun](https://github.com/CroesusSo/msyh)
