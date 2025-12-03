@@ -51,8 +51,8 @@ env:
   customTag: ${{ github.event.inputs.inputCustomTag }}
   vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
-  monoVer: ${{ github.event.inputs.inputMonoVersion }}
-  geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
+  #monoVer: ${{ github.event.inputs.inputMonoVersion }}
+  #geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
 
 jobs:
   BCC:
