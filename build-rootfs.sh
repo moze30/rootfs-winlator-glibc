@@ -318,7 +318,9 @@ create_ver_txt
 if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-lite.tar.xz .; then
   exit 1
 fi
+
 cd /tmp
+
 tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 if [[ -d fonts ]]; then
@@ -347,19 +349,16 @@ if [[ $installAddons == 1 ]]; then
     wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi
   else
     echo "extra-res no such dir"
+    exit 1
+  fi
+else
+  if [[ -d extra-res ]]; then
+    cp -r -p extra-res /data/data/com.winlator/files/rootfs/
+  else
+    echo "extra-res no such dir"
+    exit 1
   fi
 fi
-
-cd /data/data/com.winlator/files/rootfs/extra
-cat > Setup86-gecko.bat << EOF
-msiexec /i "Z:\extra-res\wine-mono-${monoVer}-x86.msi"
-EOF
-
-cat > Setup86-gecko.bat << EOF
-msiexec /i "Z:\extra-res\wine-gecko-${geckoVer}-x86_64.msi"
-EOF
-
-cat > Setup86_64-gecko
 
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
