@@ -232,6 +232,10 @@ bilibili:
 
 [7zip](https://www.7-zip.org/)
 
+- Subproject
+
+[wfm中文版](https://github.com/Waim908/wfm)
+
 #### 字体(winlator高版本强制注册Fontlink无需修改注册表)
 
 [msyh/simsun](https://github.com/CroesusSo/msyh)

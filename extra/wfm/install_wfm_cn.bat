@@ -1,0 +1,1 @@
+Z:\opt\apps\7-Zip\7z.exe x "Z:\extra-res\wfm\wfm.zip" -o"C:\Windows" -y
