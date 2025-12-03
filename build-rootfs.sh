@@ -1,3 +1,8 @@
+extra_pkg=(
+  7zip
+)
+pacman -S --needed --noconfirm ${extra_pkg[@]}
+
 export TZ=Asia/Shanghai
 export RootDirectories=(
   etc
@@ -71,6 +76,17 @@ Others:
   [EN]Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
 EOF
 }
+
+################
+# Compile Args #
+################
+
+# 使用O2是为了稳定性和性能的平衡
+
+export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -s"
+export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -s"
+export LDFLAGS="-O2 -flto=auto -s"
+
 if [[ ! -f /tmp/init.sh ]]; then
   exit 1
 else
@@ -320,17 +336,18 @@ if [[ -d extra ]]; then
 else
   echo "extra no such dir"
 fi
-
-if [[ -d extra-res ]]; then
-  cp -r -p extra-res /data/data/com.winlator/files/rootfs/
-  cd /data/data/com.winlator/files/rootfs/extra-res/
-  # 10.3.0 https://github.com/wine-mono/wine-mono/releases/download/wine-mono-10.3.0/wine-mono-10.3.0-x86.msi
-  wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi || exit 1
-  # https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86_64.msi
-  wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86.msi
-  wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi
-else
-  echo "extra-res no such dir"
+if [[ $installAddons == 1 ]]; then
+  if [[ -d extra-res ]]; then
+    cp -r -p extra-res /data/data/com.winlator/files/rootfs/
+    cd /data/data/com.winlator/files/rootfs/extra-res/
+    # 10.3.0 https://github.com/wine-mono/wine-mono/releases/download/wine-mono-10.3.0/wine-mono-10.3.0-x86.msi
+    wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi || exit 1
+    # https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86_64.msi
+    wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86.msi
+    wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi
+  else
+    echo "extra-res no such dir"
+  fi
 fi
 
 cd /data/data/com.winlator/files/rootfs/extra

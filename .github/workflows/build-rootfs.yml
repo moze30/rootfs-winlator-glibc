@@ -30,14 +30,14 @@ on:
         description: "输入MangoHud版本："
         required: true
         default: "cmod"
-      inputMonoVersion:
-        description: "mono版本："
-        required: true
-        default: "10.3.0"
-      inputGeckoVersion:
-        description: "gecko：版本："
-        required: true
-        default: "2.47.4"
+      # inputMonoVersion:
+      #   description: "mono版本："
+      #   required: true
+      #   default: "10.3.0"
+      # inputGeckoVersion:
+      #   description: "gecko：版本："
+      #   required: true
+      #   default: "2.47.4"
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
@@ -87,8 +87,8 @@ jobs:
           export customTag=$customTag
           export flacVer=$flacVer
           export vorbisVer=$vorbisVer
-          export monoVer=$monoVer
-          export geckoVer=$geckoVer
+          #export monoVer=$monoVer
+          #export geckoVer=$geckoVer
           EOF
           # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
           # echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
@@ -118,8 +118,6 @@ jobs:
           tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
           body: |
               xz=> ${{ github.event.inputs.inputXzVersion }}
-              monoVer=> ${{ github.event.inputs.inputMonoVersion }}
-              geckoVer=> ${{ github.event.inputs.inputGeckoVersion }}
               libmp3lame=> 3.100
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
               libvorbis=> ${{ github.event.inputs.inputVorbisVersion }}

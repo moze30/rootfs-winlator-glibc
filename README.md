@@ -228,6 +228,8 @@ bilibili:
 
 [Notepad2](https://github.com/XhmikosR/notepad2-mod)
 
+[d7vk](https://github.com/WinterSnowfall/d7vk)
+
 #### 字体(winlator高版本强制注册Fontlink无需修改注册表)
 
 [msyh/simsun](https://github.com/CroesusSo/msyh)
