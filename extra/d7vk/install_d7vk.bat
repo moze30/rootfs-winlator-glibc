@@ -1,1 +1,1 @@
-Z:\opt\apps\7-zip\7z.exe x "Z:\extra-res\d7vk\d7vk-0.5.7z" -o"C:\Windows\" -y
+Z:\opt\apps\7-zip\7z.exe x "Z:\extra-res\d7vk\d7vk-0.5.7z" -o"C:\windows\" -y
