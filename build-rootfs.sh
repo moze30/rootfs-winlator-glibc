@@ -69,11 +69,33 @@ Version:
   xkbcommon=> $xkbcommonVer
   mangohud=> $mangohudVer
   rootfs-tag=> $customTag
-Repo:
+GitHub:
   [Waim908/rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)
 Others:
   [CN]任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复。
   [EN]Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
+License:
+  MIT License
+
+  Copyright (c) 2025 Waim908
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
 EOF
 }
 
@@ -314,8 +336,10 @@ echo "Package"
 mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
+##############
 create_ver_txt
-if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-lite.tar.xz .; then
+##############
+if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-lite-${customTag}.tar.xz .; then
   exit 1
 fi
 
@@ -361,8 +385,8 @@ else
 fi
 
 cd /data/data/com.winlator/files/rootfs/
-create_ver_txt
-if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full.tar.xz .; then
+#create_ver_txt
+if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full-${customTag}.tar.xz .; then
   exit 1
 fi
 cd /tmp
@@ -373,7 +397,7 @@ cd /data/data/com.winlator/files/rootfs/
 rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
 rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 tar -xf /tmp/output/output-full.tar.xz -C /data/data/com.winlator/files/rootfs/
-create_ver_txt
+#create_ver_txt
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/rootfs-${customTag}.tzst .; then
   exit 1
 fi
