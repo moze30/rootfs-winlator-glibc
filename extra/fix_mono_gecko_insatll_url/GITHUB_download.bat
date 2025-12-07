@@ -1,0 +1,1 @@
+reg add "HKCU\Software\Wine\AddonsURL" /ve /t REG_SZ /d "https://raw.githubusercontent.com/brunodev85/winlator/main/wine_addons/" /f
