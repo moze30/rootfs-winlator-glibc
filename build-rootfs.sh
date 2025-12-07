@@ -396,7 +396,7 @@ tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
 rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
-tar -xf /tmp/output/output-full.tar.xz -C /data/data/com.winlator/files/rootfs/
+tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/rootfs/
 #create_ver_txt
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/rootfs-${customTag}.tzst .; then
   exit 1
