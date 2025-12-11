@@ -1,0 +1,26 @@
+name: Winlator Rootfs Test (use BCC)
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      inputDlUrl:
+        description: "Download Rootfs(tzst) URL"
+        required: true
+        default: "1.27.2"
+
+jobs:
+  BCC:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: BCC
+        run: |
+          echo "gstreamer ${gstVer}"
+          #curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
+          curl -L -O "${{ github.event.inputs.inputDlUrl }}"
+          sudo tar xf *.tzst -C /tmp
+
+      - name: Setup Debug Session
+        uses: csexton/debugger-action@master
