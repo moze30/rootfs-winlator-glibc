@@ -1,10 +1,6 @@
-# Stop Update
-
-由于winlator主仓库关闭issues，无法反馈问题。
-
 # rootfs-custom-winlator
 
-winlator 11 定制版rootfs，这是一个用于补全原版winlator的项目，适用于所有修改版本与原版。
+winlator glibc 7.1.x 定制版imagefs，这是一个用于补全原版winlator的项目，适用于所有修改版本与原版。
 
 # 目录
 
@@ -207,6 +203,8 @@ bilibili:
 [winlator](https://github.com/brunodev85/Winlator)
 
 [termux-package](https://github.com/termux/termux-packages)
+
+[winlator glibc](https://github.com/longjunyu2/winlator)
 
 #### Root filesystem 依赖与软件环境
 
