@@ -5,33 +5,33 @@ extra_pkg=(
 
 export TZ=Asia/Shanghai
 export RootDirectories=(
-  etc
   home
   opt
-  tmp
-  var
+  storage
+  usr/etc
   usr/bin
   usr/lib
   usr/share
-  usr/local
   usr/libexec
   usr/include
   usr/games
   usr/src
   usr/sbin
+  usr/tmp
+  usr/var
 )
 export meson_general_arg=(
   --buildtype=release
   --strip
-  --prefix=/data/data/com.winlator/files/rootfs/usr
-  --libdir=/data/data/com.winlator/files/rootfs/usr/lib
-  --bindir=/data/data/com.winlator/files/rootfs/usr/bin
-  --sysconfdir=/data/data/com.winlator/files/rootfs/etc
-  --libexecdir=/data/data/com.winlator/files/rootfs/usr/libexec
-  --localstatedir=/data/data/com.winlator/files/rootfs/var
-  --datadir=/data/data/com.winlator/files/rootfs/usr/share
-  --includedir=/data/data/com.winlator/files/rootfs/usr/include
-  --sbindir=/data/data/com.winlator/files/rootfs/usr/sbin
+  --prefix=/data/data/com.winlator/files/imagefs/usr
+  --libdir=/data/data/com.winlator/files/imagefs/usr/lib
+  --bindir=/data/data/com.winlator/files/imagefs/usr/bin
+  --sysconfdir=/data/data/com.winlator/files/imagefs/etc
+  --libexecdir=/data/data/com.winlator/files/imagefs/usr/libexec
+  --localstatedir=/data/data/com.winlator/files/imagefs/var
+  --datadir=/data/data/com.winlator/files/imagefs/usr/share
+  --includedir=/data/data/com.winlator/files/imagefs/usr/include
+  --sbindir=/data/data/com.winlator/files/imagefs/usr/sbin
 )
 apply_patch() {
   if [[ ! -d /tmp/patches ]]; then
@@ -50,7 +50,7 @@ apply_patch() {
   fi
 }
 patchelf_fix() {
-  LD_RPATH=/data/data/com.winlator/files/rootfs/usr/lib
+  LD_RPATH=/data/data/com.winlator/files/imagefs/usr/lib
   LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
   find . -type f -exec file {} + | grep -E ":.*ELF" | cut -d: -f1 | while read -r elf_file; do
     echo "Patching $elf_file..."
@@ -61,16 +61,18 @@ patchelf_fix() {
   done
 }
 create_ver_txt() {
-  cat >'/data/data/com.winlator/files/rootfs/_version_.txt' <<EOF
+  cat >'/data/data/com.winlator/files/imagefs/_version_.txt' <<EOF
 Output Date(UTC+8): $date
 Version:
   xz=> $xzVer
   gstreamer=> $gstVer
   xkbcommon=> $xkbcommonVer
   mangohud=> $mangohudVer
-  rootfs-tag=> $customTag
+  imagefs-tag=> $customTag
 GitHub:
   [Waim908/rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)
+GlibcMod:
+  [moze30/rootfs-winlator-glibc](https://github.com/moze30/rootfs-winlator-glibc)
 Others:
   [CN]任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复。
   [EN]Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
@@ -105,8 +107,8 @@ EOF
 
 # 使用O2是为了稳定性和性能的平衡
 
-export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -s"
-export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -s"
+export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto"
+export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto"
 export LDFLAGS="-O2 -flto=auto -s"
 
 if [[ ! -f /tmp/init.sh ]]; then
@@ -116,28 +118,31 @@ else
   source /tmp/init.sh
 fi
 pacman -R --noconfirm libvorbis flac lame
-create_rootfs_dir() {
-  mkdir -p /data/data/com.winlator/files/rootfs/
+create_imagefs_dir() {
+  mkdir -p /data/data/com.winlator/files/imagefs/
   nowPath=$(pwd)
-  rootfsDir=/data/data/com.winlator/files/rootfs/
+  imagefsDir=/data/data/com.winlator/files/imagefs/
   for i in ${!RootDirectories[@]}; do
-    mkdir -p $rootfsDir/${RootDirectories[i]}
+    mkdir -p $imagefsDir/${RootDirectories[i]}
   done
-  cd $rootfsDir
+  cd $imagefsDir
   ln -sf usr/bin
   ln -sf usr/lib
-  ln -sf usr/sbin
+  ln -sf usr/etc
+  ln -sf usr/tmp
+  ln -sf usr/var
+
   cd $nowPath
 }
-create_rootfs_dir
+create_imagefs_dir
 cd /tmp
-if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
+if ! wget https://github.com/Waim908/imagefs-custom-winlator/releases/download/ori-b11.0/imagefs.tzst; then
   exit 1
 fi
-#tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-#tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
-#tar -xf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
-cd /data/data/com.winlator/files/rootfs/etc
+#tar -xf imagefs.tzst -C /data/data/com.winlator/files/imagefs/
+#tar -xf data.tar.xz -C /data/data/com.winlator/files/imagefs/
+#tar -xf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/imagefs/
+cd /data/data/com.winlator/files/imagefs/etc
 mkdir ca-certificates
 cd ca-certificates
 if ! wget https://curl.haxx.se/ca/cacert.pem; then
@@ -164,7 +169,7 @@ else
   echo "Use Winlator Glibc mangohud"
 fi
 
-git clone -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src || exit 1
+#git clone -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src || exit 1
 
 git clone -b $flacVer https://github.com/xiph/flac.git flac-src || exit 1
 
@@ -196,7 +201,7 @@ if [[ ! $mangohudVer == cmod ]]; then
   meson install -C builddir
 else
   if [[ -f /tmp/mangohud.tar.xz ]]; then
-    tar xf /tmp/mangohud.tar.xz -C /data/data/com.winlator/files/rootfs/ || exit 1
+    tar xf /tmp/mangohud.tar.xz -C /data/data/com.winlator/files/imagefs/ || exit 1
   else
     echo "/tmp/mangohud.tar.xz No such file"
     exit 1
@@ -208,7 +213,7 @@ cd /tmp/xz-src
 ./autogen.sh
 mkdir build
 cd build
-if ! ../configure -prefix=/data/data/com.winlator/files/rootfs/usr; then
+if ! ../configure -prefix=/data/data/com.winlator/files/imagefs/usr; then
   exit 1
 fi
 if ! make -j$(nproc); then
@@ -218,18 +223,18 @@ make install
 
 # mp3lame https://sourceforge.net/projects/lame/files/latest/download
 
-cd /tmp/lame-3.100
-./configure --prefix=/data/data/com.winlator/files/rootfs/usr/ || exit 1
-make -j$(nproc) || exit 1
-make install
-
+#cd /tmp/lame-3.100
+#./configure --prefix=/data/data/com.winlator/files/imagefs/usr/ || exit 1
+#make -j$(nproc) || exit 1
+#make install
+#
 # FLAC
 
 cd /tmp/flac-src
 if ! ./autogen.sh; then
   exit 1
 fi
-if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/usr/; then
+if ! ./configure --prefix=/data/data/com.winlator/files/imagefs/usr/; then
   exit 1
 fi
 if ! make -j$(nproc); then
@@ -239,19 +244,19 @@ make install
 
 # Vorbis
 
-cd /tmp/vorbis-src
-echo "Build and Compile vorbis"
-if ! ./autogen.sh; then
-  exit 1
-fi
-if ! ./configure --prefix=/data/data/com.winlator/files/rootfs/usr/; then
-  exit 1
-fi
-if ! make -j$(nproc); then
-  exit 1
-fi
-make install
-
+#cd /tmp/vorbis-src
+#echo "Build and Compile vorbis"
+#if ! ./autogen.sh; then
+#  exit 1
+#fi
+#if ! ./configure --prefix=/data/data/com.winlator/files/imagefs/usr/; then
+#  exit 1
+#fi
+#if ! make -j$(nproc); then
+#  exit 1
+#fi
+#make install
+#
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
@@ -334,7 +339,7 @@ export date=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
 # package
 echo "Package"
 mkdir /tmp/output
-cd /data/data/com.winlator/files/rootfs/
+cd /data/data/com.winlator/files/imagefs/
 patchelf_fix
 ##############
 create_ver_txt
@@ -345,27 +350,27 @@ fi
 
 cd /tmp
 
-tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
-tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
-if [[ -d fonts ]]; then
-  cp -r -p fonts /data/data/com.winlator/files/rootfs/usr/share
-else
-  echo "fonts no such dir"
-fi
-
+#tar -xf data.tar.xz -C /data/data/com.winlator/files/imagefs/
+tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/imagefs/
+#if [[ -d fonts ]]; then
+#  cp -r -p fonts /data/data/com.winlator/files/imagefs/usr/share
+#else
+#  echo "fonts no such dir"
+#fi
+#
 #########
 # Extra #
 #########
 
 if [[ -d extra ]]; then
-  cp -r -p extra /data/data/com.winlator/files/rootfs/
+  cp -r -p extra /data/data/com.winlator/files/imagefs/
 else
   echo "extra no such dir"
 fi
 if [[ $installAddons == 1 ]]; then
   if [[ -d extra-res ]]; then
-    cp -r -p extra-res /data/data/com.winlator/files/rootfs/
-    cd /data/data/com.winlator/files/rootfs/extra-res/
+    cp -r -p extra-res /data/data/com.winlator/files/imagefs/
+    cd /data/data/com.winlator/files/imagefs/extra-res/
     # 10.3.0 https://github.com/wine-mono/wine-mono/releases/download/wine-mono-10.3.0/wine-mono-10.3.0-x86.msi
     wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi || exit 1
     # https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86_64.msi
@@ -377,27 +382,27 @@ if [[ $installAddons == 1 ]]; then
   fi
 else
   if [[ -d extra-res ]]; then
-    cp -r -p extra-res /data/data/com.winlator/files/rootfs/
+    cp -r -p extra-res /data/data/com.winlator/files/imagefs/
   else
     echo "extra-res no such dir"
     exit 1
   fi
 fi
 
-cd /data/data/com.winlator/files/rootfs/
+cd /data/data/com.winlator/files/imagefs/
 #create_ver_txt
 if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full-${customTag}.tar.xz .; then
   exit 1
 fi
 cd /tmp
-rm -rf /data/data/com.winlator/files/rootfs/
-create_rootfs_dir
-tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-cd /data/data/com.winlator/files/rootfs/
-rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
-rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
-tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/rootfs/
+rm -rf /data/data/com.winlator/files/imagefs/
+create_imagefs_dir
+tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
+cd /data/data/com.winlator/files/imagefs/
+rm -rf /data/data/com.winlator/files/imagefs/lib/libgst*
+rm -rf /data/data/com.winlator/files/imagefs/lib/gstreamer-1.0
+tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
-if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/rootfs-${customTag}.tzst .; then
+if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.txz .; then
   exit 1
 fi

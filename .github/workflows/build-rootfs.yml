@@ -14,10 +14,10 @@ on:
         description: "输入xz版本："
         required: true
         default: "v5.8.1"
-      inputVorbisVersion:
-        description: "输入vorbis版本："
-        required: true
-        default: "v1.3.7"
+      # inputVorbisVersion:
+      #  description: "输入vorbis版本："
+      #  required: true
+      #  default: "v1.3.7"
       inputFlacVersion:
         description: "输入flac版本："
         required: true
@@ -130,6 +130,6 @@ jobs:
           files: |
             /tmp/archlinux/tmp/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
             /tmp/archlinux/tmp/output/output-full-${{ github.event.inputs.inputCustomTag }}.tar.xz
-            /tmp/archlinux/tmp/output/rootfs-${{ github.event.inputs.inputCustomTag }}.tzst
+            /tmp/archlinux/tmp/output/rootfs-${{ github.event.inputs.inputCustomTag }}.txz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
