@@ -1,10 +1,6 @@
-# Stop Update
-
-由于winlator主仓库关闭issues，无法反馈问题。
-
 # rootfs-custom-winlator
 
-winlator 11 定制版rootfs，这是一个用于补全原版winlator的项目，适用于所有修改版本与原版。
+winlator-glibc 定制版rootfs，这是一个用于补全glibc版winlator的项目，适用于所有修改版本与原版。
 
 # 目录
 
