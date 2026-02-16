@@ -136,7 +136,7 @@ create_imagefs_dir() {
 }
 create_imagefs_dir
 cd /tmp
-if ! wget https://github.com/moze30/imagefs-winlator-glibc/releases/download/rootfs-ori-7.1.5/imagefs.txz; then
+if ! wget https://github.com/moze30/rootfs-winlator-glibc/releases/download/rootfs-ori-7.1.5/imagefs.txz; then
   exit 1
 fi
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
