@@ -181,9 +181,8 @@ meson setup builddir ${meson_general_arg[@]} \
 meson compile -C builddir || exit 1
 meson install -C builddir
 
-cd /tmp/mangohud-src
-
 if [[ ! $mangohudVer == cmod ]]; then
+  cd /tmp/mangohud-src
   apply_patch mangohud $mangohudVer
 
   meson setup builddir ${meson_general_arg[@]} \
