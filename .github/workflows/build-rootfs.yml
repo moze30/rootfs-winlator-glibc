@@ -124,7 +124,7 @@ jobs:
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
-              Rename to `rootfs.tzst` put to apk/assets/rootfs.tzst
+              Rename to `imagefs.txz` put to apk/assets/imagefs.txz
 
           files: |
             /tmp/archlinux/tmp/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
