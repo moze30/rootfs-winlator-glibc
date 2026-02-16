@@ -49,7 +49,7 @@ env:
   xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
   mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
   customTag: ${{ github.event.inputs.inputCustomTag }}
-  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+    # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
   #monoVer: ${{ github.event.inputs.inputMonoVersion }}
   #geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
@@ -86,7 +86,7 @@ jobs:
           export mangohudVer=$mangohudVer
           export customTag=$customTag
           export flacVer=$flacVer
-          export vorbisVer=$vorbisVer
+          #export vorbisVer=$vorbisVer
           #export monoVer=$monoVer
           #export geckoVer=$geckoVer
           EOF
@@ -120,7 +120,6 @@ jobs:
               xz=> ${{ github.event.inputs.inputXzVersion }}
               libmp3lame=> 3.100
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
-              libvorbis=> ${{ github.event.inputs.inputVorbisVersion }}
               gstreamer=> ${{ github.event.inputs.inputGstVersion }}
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
