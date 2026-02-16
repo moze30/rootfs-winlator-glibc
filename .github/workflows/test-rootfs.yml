@@ -17,10 +17,10 @@ jobs:
     steps:
       - name: BCC
         run: |
-          echo "gstreamer ${gstVer}"
-          #curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
-          curl -L -O "${{ github.event.inputs.inputDlUrl }}"
-          sudo tar xf *.tzst -C /tmp
-
+          export 
+          echo "####"
+          env
+          echo "####"
+          ls $GITHUB_WORKSPACE
       - name: Setup Debug Session
         uses: csexton/debugger-action@master

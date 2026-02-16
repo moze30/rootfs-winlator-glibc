@@ -136,7 +136,7 @@ create_imagefs_dir() {
 }
 create_imagefs_dir
 cd /tmp
-if ! wget https://github.com/Waim908/imagefs-custom-winlator/releases/download/ori-b11.0/imagefs.tzst; then
+if ! wget https://github.com/moze30/imagefs-winlator-glibc/releases/download/ori-7.1.5/imagefs.txz; then
   exit 1
 fi
 #tar -xf imagefs.tzst -C /data/data/com.winlator/files/imagefs/
