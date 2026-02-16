@@ -64,7 +64,7 @@ jobs:
           curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
           sudo tar xf wlt-bcc.tar.xz -C /tmp
           cd /tmp
-          https://github.com/moze30/rootfs-winlator-glibc.git
+          git clone https://github.com/moze30/rootfs-winlator-glibc.git
           sudo cp rootfs-custom-winlator/build-rootfs.sh /tmp/archlinux/bin
           mv rootfs-custom-winlator/data.tar.xz /tmp/archlinux/tmp
           mv rootfs-custom-winlator/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
