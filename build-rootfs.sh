@@ -117,7 +117,7 @@ else
   cat /tmp/init.sh
   source /tmp/init.sh
 fi
-pacman -R --noconfirm libvorbis flac lame
+pacman -R --noconfirm flac lame
 create_imagefs_dir() {
   mkdir -p /data/data/com.winlator/files/imagefs/
   nowPath=$(pwd)
@@ -153,9 +153,6 @@ cd /tmp
 if ! git clone -b $xzVer https://github.com/tukaani-project/xz.git xz-src; then
   exit 1
 fi
-# if ! git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src; then
-#   exit 1
-# fi
 #git clone https://github.com/xiph/opus.git opus-src
 if ! git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src; then
   exit 1
@@ -168,8 +165,6 @@ if [[ ! $mangohudVer == cmod ]]; then
 else
   echo "Use Winlator Glibc mangohud"
 fi
-
-#git clone -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src || exit 1
 
 git clone -b $flacVer https://github.com/xiph/flac.git flac-src || exit 1
 
@@ -242,21 +237,8 @@ if ! make -j$(nproc); then
 fi
 make install
 
-# Vorbis
+# (removed vorbis section)
 
-#cd /tmp/vorbis-src
-#echo "Build and Compile vorbis"
-#if ! ./autogen.sh; then
-#  exit 1
-#fi
-#if ! ./configure --prefix=/data/data/com.winlator/files/imagefs/usr/; then
-#  exit 1
-#fi
-#if ! make -j$(nproc); then
-#  exit 1
-#fi
-#make install
-#
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
