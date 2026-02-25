@@ -20,15 +20,15 @@ jobs:
           # 验证安装
           docker --version
 
-      # 对应 Job 2：创建并初始化 Docker 容器（使用指定摘要的镜像）
+      # 对应 Job 2：创建并初始化 Docker 容器（使用指定摘要的镜像，并更换清华源）
       - name: 创建并启动 Docker 容器
         run: |
           # 使用固定摘要的 Ubuntu 24.04 镜像
           sudo docker run -d --privileged --name winlator-rootfs ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 sleep infinity
           # 等待容器启动
           sleep 5
-          # 在容器内执行基础配置
-          sudo docker exec winlator-rootfs bash -c "apt update && apt upgrade -y && apt install -y git"
+          # 更换为清华源并安装基础软件
+          sudo docker exec winlator-rootfs bash -c "sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.tuna.tsinghua.edu.cn/ubuntu|g' /etc/apt/sources.list && sed -i 's|http://security.ubuntu.com/ubuntu|http://mirrors.tuna.tsinghua.edu.cn/ubuntu|g' /etc/apt/sources.list && apt update && apt upgrade -y && apt install -y git"
 
       # 对应 Job 3：在容器内克隆仓库并运行配置脚本
       - name: 克隆仓库
