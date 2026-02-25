@@ -20,11 +20,11 @@ jobs:
           # 验证安装
           docker --version
 
-      # 对应 Job 2：创建并初始化 Docker 容器
+      # 对应 Job 2：创建并初始化 Docker 容器（使用指定摘要的镜像）
       - name: 创建并启动 Docker 容器
         run: |
-          # 后台运行容器（使用 sleep infinity 保持运行）
-          sudo docker run -d --privileged --name winlator-rootfs ubuntu:24.04 sleep infinity
+          # 使用固定摘要的 Ubuntu 24.04 镜像
+          sudo docker run -d --privileged --name winlator-rootfs ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 sleep infinity
           # 等待容器启动
           sleep 5
           # 在容器内执行基础配置
