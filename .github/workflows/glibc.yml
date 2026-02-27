@@ -54,10 +54,10 @@ jobs:
           docker exec winlator-rootfs bash -c "
             cd /root/glibc-packages &&
             export TERMUX_PACKAGE_LIBRARY=glibc &&
-            ./build-package.sh -a aarch64 \
+            ./build-package.sh -a aarch64 -s \
               alsa-lib assimp attr bash-completion bash binutils binutils-libs brotli \
               ca-certificates cmake coreutils cppdap dbus e2fsprogs fontconfig freeglut \
-              freetype gcc gcc-libs gdbm gettext glib glu harfbuzz json-c jsoncpp \
+              freetype gcc gcc-libs gdbm gettext glib glibc glu harfbuzz json-c jsoncpp \
               krb5 libacl libarchive libblkid libbz2 libcairo libcap libcap-ng libclc \
               libcurl libdb libdebuginfod libdrm libdw libedit libelf libepoxy libevent \
               libexpat libffi libflac libgcrypt libglvnd libgmp libgnutls libgpg-error \
