@@ -6,103 +6,82 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 安装宿主机依赖
+      - name: Install host deps
         run: |
           sudo apt update
-          sudo apt upgrade -y
-          sudo apt install -y git
+          sudo apt install -y git docker.io
 
-      - name: 创建并启动 Docker 容器
+      - name: Start container
         run: |
-          docker run -d --privileged --name winlator-rootfs ubuntu:24.04 tail -f /dev/null
+          docker run -d --privileged --name build-env ubuntu:24.04 tail -f /dev/null
 
-      - name: 在容器内安装基础工具
+      - name: Install container deps
         run: |
-          docker exec winlator-rootfs bash -c "
+          docker exec build-env bash -c "
             apt update &&
-            apt upgrade -y &&
-            apt install -y git
+            apt install -y git build-essential curl sudo
           "
 
-      - name: 克隆仓库
+      - name: Clone repo
         run: |
-          docker exec winlator-rootfs bash -c "
+          docker exec build-env bash -c "
             cd /root &&
             git clone https://github.com/moze30/glibc-packages.git
           "
 
-      - name: 运行配置脚本（严格按顺序）
+      - name: Setup environment
         run: |
-          docker exec winlator-rootfs bash -c "
+          docker exec build-env bash -c "
             set -e
             cd /root/glibc-packages
-            echo '当前目录内容：'
-            ls -la
-            echo '执行 get-build-package.sh'
             ./get-build-package.sh
-            echo '执行 scripts/setup-ubuntu.sh'
             ./scripts/setup-ubuntu.sh
-            echo '执行 scripts/setup-android-sdk.sh'
-            ./scripts/setup-android-sdk.sh
-            echo '执行 scripts/setup-cgct.sh'
             ./scripts/setup-cgct.sh
           "
 
-      - name: 编译所有包
+      - name: Disable linux-api-headers
         run: |
-          docker exec winlator-rootfs bash -c "
-            cd /root/glibc-packages &&
-            export TERMUX_PACKAGE_LIBRARY=glibc &&
-            ./build-package.sh -a aarch64 -s \
-              alsa-lib assimp attr bash-completion bash binutils binutils-libs brotli \
-              ca-certificates cmake coreutils cppdap dbus e2fsprogs fontconfig freeglut \
-              freetype gcc gcc-libs gdbm gettext glib glibc glu harfbuzz json-c jsoncpp \
-              krb5 libacl libarchive libblkid libbz2 libcairo libcap libcap-ng libclc \
-              libcurl libdb libdebuginfod libdrm libdw libedit libelf libepoxy libevent \
-              libexpat libffi libflac libgcrypt libglvnd libgmp libgnutls libgpg-error \
-              libgraphite libicu libidn2 libisl libjansson libjpeg-turbo libllvm liblz4 \
-              liblzma liblzo libmount libmp3lame libmpc libmpfr libmpg123 libnettle \
-              libnghttp2 libnsl libogg libomxil-bellagio libopus libpam libpciaccess \
-              libpixman libpng libpsl libpulse libsmartcols libsndfile libssh2 libtasn1 \
-              libtirpc libunistring libunwind libuuid libuv libva libvdpau libverto \
-              libvorbis libwayland libx11 libxau libxcb libxcomposite libxcrypt libxcursor \
-              libxdmcp libxext libxfixes libxi libxkbcommon libxml2 libxrandr libxrender \
-              libxshmfence libxxf86vm make mangohud mesa-demos mesa \
-              mesa-vulkan-icd-freedreno mesa-vulkan-icd-swrast mpg123 ncurses opengl \
-              openssl osmesa p11-kit patchelf pcre2 perl pkgconf pulseaudio python \
-              python-pip readline rhash strace termux-exec util-linux vulkan-icd-loader \
-              vulkan-tools xcb-proto xcb-util-wm xkeyboard-config xorg-util-macros \
-              xorgproto zlib zstd
+          docker exec build-env bash -c "
+            cd /root/glibc-packages/gpkg
+            rm -rf linux-api-headers*
           "
 
-      - name: 提取并打包编译结果
+      - name: Build ALL packages
         run: |
-          docker exec winlator-rootfs bash -c "
-            mkdir -p /root/chanwu
-            # 取第一个 deb 包（避免通配符无匹配时出错）
-            deb_file=\$(ls /root/glibc-packages/output/*.deb 2>/dev/null | head -n1)
-            if [ -z \"\$deb_file\" ]; then
-              echo '错误：未找到 .deb 包'
-              exit 1
-            fi
-            dpkg-deb -x \"\$deb_file\" /root/chanwu
-            cd /root/chanwu
-            tar czvf /root/winlator-glibc.tar.gz data
+          docker exec build-env bash -c "
+            set -e
+            cd /root/glibc-packages
+            export TERMUX_PACKAGE_LIBRARY=glibc
+
+            for pkg in \$(ls gpkg); do
+              echo '========== BUILDING' \$pkg '=========='
+              ./build-package.sh -a aarch64 \$pkg || exit 1
+            done
           "
 
-      - name: 复制 tar 包到宿主机
+      - name: Collect deb files
         run: |
-          docker cp winlator-rootfs:/root/winlator-glibc.tar.gz ./
+          docker exec build-env bash -c "
+            mkdir -p /root/artifacts
+            cp /root/glibc-packages/output/*.deb /root/artifacts/
+            cd /root/artifacts
+            tar czvf /root/all-packages.tar.gz *.deb
+          "
 
-      - name: 上传构建产物
+      - name: Copy artifact
+        run: |
+          docker cp build-env:/root/all-packages.tar.gz ./
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: winlator-glibc
-          path: ./winlator-glibc.tar.gz
+          name: winlator-glibc-packages
+          path: ./all-packages.tar.gz
 
-      - name: 清理容器
+      - name: Cleanup
         if: always()
         run: |
-          docker stop winlator-rootfs || true
-          docker rm winlator-rootfs || true
+          docker stop build-env || true
+          docker rm build-env || true
