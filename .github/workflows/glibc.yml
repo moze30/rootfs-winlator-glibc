@@ -1,20 +1,18 @@
 name: 编译 winlator-glibc
 
 on:
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 对应第一个 job：安装依赖（宿主机）
       - name: 安装宿主机依赖
         run: |
           sudo apt update
           sudo apt upgrade -y
-          sudo apt install -y git  # docker 已在 GitHub Actions 环境中预装，无需额外安装
+          sudo apt install -y git
 
-      # 对应第二个 job：配置 Docker 容器（后台运行，保持存活）
       - name: 创建并启动 Docker 容器
         run: |
           docker run -d --privileged --name winlator-rootfs ubuntu:24.04 tail -f /dev/null
@@ -27,7 +25,6 @@ jobs:
             apt install -y git
           "
 
-      # 对应第三个 job：克隆仓库
       - name: 克隆仓库
         run: |
           docker exec winlator-rootfs bash -c "
@@ -35,19 +32,23 @@ jobs:
             git clone https://github.com/moze30/glibc-packages.git
           "
 
-      # 对应第四个 job：运行配置脚本
-      - name: 运行配置脚本
+      - name: 运行配置脚本（严格按顺序）
         run: |
           docker exec winlator-rootfs bash -c "
-            cd /root/glibc-packages &&
-            chmod +x ./get-build-package.sh ./scripts/*.sh &&  # 确保脚本可执行
-            ./get-build-package.sh &&
-            ./scripts/setup-ubuntu.sh &&
-            ./scripts/setup-android-sdk.sh &&
+            set -e
+            cd /root/glibc-packages
+            echo '当前目录内容：'
+            ls -la
+            echo '执行 get-build-package.sh'
+            ./get-build-package.sh
+            echo '执行 scripts/setup-ubuntu.sh'
+            ./scripts/setup-ubuntu.sh
+            echo '执行 scripts/setup-android-sdk.sh'
+            ./scripts/setup-android-sdk.sh
+            echo '执行 scripts/setup-cgct.sh'
             ./scripts/setup-cgct.sh
           "
 
-      # 对应第五个 job：开始编译
       - name: 编译所有包
         run: |
           docker exec winlator-rootfs bash -c "
@@ -75,29 +76,31 @@ jobs:
               xorgproto zlib zstd
           "
 
-      # 对应第六个 job：打包产物
       - name: 提取并打包编译结果
         run: |
           docker exec winlator-rootfs bash -c "
-            mkdir -p /root/chanwu &&
-            dpkg-deb -x /root/glibc-packages/output/*.deb /root/chanwu &&
-            cd /root/chanwu &&
+            mkdir -p /root/chanwu
+            # 取第一个 deb 包（避免通配符无匹配时出错）
+            deb_file=\$(ls /root/glibc-packages/output/*.deb 2>/dev/null | head -n1)
+            if [ -z \"\$deb_file\" ]; then
+              echo '错误：未找到 .deb 包'
+              exit 1
+            fi
+            dpkg-deb -x \"\$deb_file\" /root/chanwu
+            cd /root/chanwu
             tar czvf /root/winlator-glibc.tar.gz data
           "
 
-      # 从容器中复制出最终 tar 包
       - name: 复制 tar 包到宿主机
         run: |
           docker cp winlator-rootfs:/root/winlator-glibc.tar.gz ./
 
-      # 上传到 GitHub Actions Artifacts
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: winlator-glibc
           path: ./winlator-glibc.tar.gz
 
-      # 可选：停止并删除容器以清理资源
       - name: 清理容器
         if: always()
         run: |
