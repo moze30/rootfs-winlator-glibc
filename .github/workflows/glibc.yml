@@ -57,7 +57,7 @@ jobs:
             ./build-package.sh -a aarch64 \
               alsa-lib assimp attr bash-completion bash binutils binutils-libs brotli \
               ca-certificates cmake coreutils cppdap dbus e2fsprogs fontconfig freeglut \
-              freetype gcc gcc-libs gdbm gettext glib glibc glu harfbuzz json-c jsoncpp \
+              freetype gcc gcc-libs gdbm gettext glib glu harfbuzz json-c jsoncpp \
               krb5 libacl libarchive libblkid libbz2 libcairo libcap libcap-ng libclc \
               libcurl libdb libdebuginfod libdrm libdw libedit libelf libepoxy libevent \
               libexpat libffi libflac libgcrypt libglvnd libgmp libgnutls libgpg-error \
@@ -68,7 +68,7 @@ jobs:
               libtirpc libunistring libunwind libuuid libuv libva libvdpau libverto \
               libvorbis libwayland libx11 libxau libxcb libxcomposite libxcrypt libxcursor \
               libxdmcp libxext libxfixes libxi libxkbcommon libxml2 libxrandr libxrender \
-              libxshmfence libxxf86vm linux-api-headers make mangohud mesa-demos mesa \
+              libxshmfence libxxf86vm make mangohud mesa-demos mesa \
               mesa-vulkan-icd-freedreno mesa-vulkan-icd-swrast mpg123 ncurses opengl \
               openssl osmesa p11-kit patchelf pcre2 perl pkgconf pulseaudio python \
               python-pip readline rhash strace termux-exec util-linux vulkan-icd-loader \
