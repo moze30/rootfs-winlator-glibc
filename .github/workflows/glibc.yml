@@ -10,8 +10,7 @@ jobs:
       - name: 安装宿主机依赖
         run: |
           sudo apt update
-          sudo apt upgrade -y
-          sudo apt install -y git
+          sudo apt install -y git docker.io
 
       - name: 创建并启动 Docker 容器
         run: |
@@ -21,8 +20,7 @@ jobs:
         run: |
           docker exec winlator-rootfs bash -c "
             apt update &&
-            apt upgrade -y &&
-            apt install -y git
+            apt install -y git curl jq unzip wget
           "
 
       - name: 克隆仓库
@@ -32,13 +30,11 @@ jobs:
             git clone https://github.com/moze30/glibc-packages.git
           "
 
-      - name: 运行配置脚本（严格按顺序）
+      - name: 运行配置脚本
         run: |
           docker exec winlator-rootfs bash -c "
             set -e
             cd /root/glibc-packages
-            echo '当前目录内容：'
-            ls -la
             echo '执行 get-build-package.sh'
             ./get-build-package.sh
             echo '执行 scripts/setup-ubuntu.sh'
@@ -80,15 +76,12 @@ jobs:
         run: |
           docker exec winlator-rootfs bash -c "
             mkdir -p /root/chanwu
-            # 取第一个 deb 包（避免通配符无匹配时出错）
-            deb_file=\$(ls /root/glibc-packages/output/*.deb 2>/dev/null | head -n1)
-            if [ -z \"\$deb_file\" ]; then
-              echo '错误：未找到 .deb 包'
-              exit 1
-            fi
-            dpkg-deb -x \"\$deb_file\" /root/chanwu
+            for deb in /root/glibc-packages/output/*.deb; do
+              echo \"正在解压: \$deb\"
+              dpkg-deb -x \"\$deb\" /root/chanwu
+            done
             cd /root/chanwu
-            tar czvf /root/winlator-glibc.tar.gz data
+            tar czvf /root/winlator-glibc.tar.gz *
           "
 
       - name: 复制 tar 包到宿主机
