@@ -7,10 +7,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 安装宿主机依赖
+      - name: 安装宿主机依赖（修复 Docker 冲突）
         run: |
-          sudo apt update
-          sudo apt install -y git docker.io
+          # 清理可能冲突的旧包
+          sudo apt-get remove -y containerd containerd.io runc docker docker-engine docker.io || true
+          # 更新并安装基础工具
+          sudo apt-get update
+          sudo apt-get install -y git apt-transport-https ca-certificates curl software-properties-common
+          # 添加 Docker 官方 GPG 密钥和仓库
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          # 安装 Docker CE
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
       - name: 创建并启动 Docker 容器
         run: |
