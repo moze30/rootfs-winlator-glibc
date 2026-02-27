@@ -11,7 +11,7 @@ jobs:
       - name: Install host deps
         run: |
           sudo apt update
-          sudo apt install -y git docker.io
+          sudo apt install -y git
 
       - name: Start container
         run: |
