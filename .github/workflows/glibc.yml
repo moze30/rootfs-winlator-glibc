@@ -5,59 +5,101 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04-arm  # 使用 ARM 架构的 Ubuntu 24.04 运行器
-
+    runs-on: ubuntu-latest
     steps:
-      # 对应 Job 1：安装系统依赖和 Docker
-      - name: 安装系统依赖和 Docker
+      # 对应第一个 job：安装依赖（宿主机）
+      - name: 安装宿主机依赖
         run: |
           sudo apt update
           sudo apt upgrade -y
-          sudo apt install -y git ca-certificates curl
-          # 安装 Docker（官方脚本）
-          curl -fsSL https://get.docker.com -o get-docker.sh
-          sudo sh get-docker.sh
-          docker --version
+          sudo apt install -y git  # docker 已在 GitHub Actions 环境中预装，无需额外安装
 
-      # 对应 Job 2：创建并初始化 Docker 容器
+      # 对应第二个 job：配置 Docker 容器（后台运行，保持存活）
       - name: 创建并启动 Docker 容器
         run: |
-          # 后台运行容器
-          sudo docker run -d --privileged --name winlator-rootfs ubuntu:24.04 sleep infinity
-          sleep 5
-          # 移除 i386 架构，然后更新并安装 git
-          sudo docker exec winlator-rootfs bash -c "dpkg --remove-architecture i386 && apt update && apt upgrade -y && apt install -y git"
+          docker run -d --privileged --name winlator-rootfs ubuntu:24.04 tail -f /dev/null
 
-      # 对应 Job 3：克隆仓库并运行配置脚本
+      - name: 在容器内安装基础工具
+        run: |
+          docker exec winlator-rootfs bash -c "
+            apt update &&
+            apt upgrade -y &&
+            apt install -y git
+          "
+
+      # 对应第三个 job：克隆仓库
       - name: 克隆仓库
         run: |
-          sudo docker exec winlator-rootfs bash -c "cd /root && git clone https://github.com/termux-pacman/glibc-packages.git"
+          docker exec winlator-rootfs bash -c "
+            cd /root &&
+            git clone https://github.com/moze30/glibc-packages.git
+          "
 
+      # 对应第四个 job：运行配置脚本
       - name: 运行配置脚本
         run: |
-          sudo docker exec winlator-rootfs bash -c "cd /root/glibc-packages && ./get-build-package.sh"
-          sudo docker exec winlator-rootfs bash -c "cd /root/glibc-packages && ./scripts/setup-ubuntu.sh"
-          sudo docker exec winlator-rootfs bash -c "cd /root/glibc-packages && ./scripts/setup-android-sdk.sh"
-          sudo docker exec winlator-rootfs bash -c "cd /root/glibc-packages && ./scripts/setup-cgct.sh"
+          docker exec winlator-rootfs bash -c "
+            cd /root/glibc-packages &&
+            chmod +x ./get-build-package.sh ./scripts/*.sh &&  # 确保脚本可执行
+            ./get-build-package.sh &&
+            ./scripts/setup-ubuntu.sh &&
+            ./scripts/setup-android-sdk.sh &&
+            ./scripts/setup-cgct.sh
+          "
 
-      # 对应 Job 4：编译、打包并上传产物
-      - name: 编译 glibc 包
+      # 对应第五个 job：开始编译
+      - name: 编译所有包
         run: |
-          sudo docker exec winlator-rootfs bash -c "cd /root/glibc-packages && export TERMUX_PREFIX=/data/data/com.winlator/files/imagefs/usr && export TERMUX_PACKAGE_LIBRARY=glibc && ./build-package.sh -a aarch64 glibc"
+          docker exec winlator-rootfs bash -c "
+            cd /root/glibc-packages &&
+            export TERMUX_PACKAGE_LIBRARY=glibc &&
+            ./build-package.sh -a aarch64 \
+              alsa-lib assimp attr bash-completion bash binutils binutils-libs brotli \
+              ca-certificates cmake coreutils cppdap dbus e2fsprogs fontconfig freeglut \
+              freetype gcc gcc-libs gdbm gettext glib glibc glu harfbuzz json-c jsoncpp \
+              krb5 libacl libarchive libblkid libbz2 libcairo libcap libcap-ng libclc \
+              libcurl libdb libdebuginfod libdrm libdw libedit libelf libepoxy libevent \
+              libexpat libffi libflac libgcrypt libglvnd libgmp libgnutls libgpg-error \
+              libgraphite libicu libidn2 libisl libjansson libjpeg-turbo libllvm liblz4 \
+              liblzma liblzo libmount libmp3lame libmpc libmpfr libmpg123 libnettle \
+              libnghttp2 libnsl libogg libomxil-bellagio libopus libpam libpciaccess \
+              libpixman libpng libpsl libpulse libsmartcols libsndfile libssh2 libtasn1 \
+              libtirpc libunistring libunwind libuuid libuv libva libvdpau libverto \
+              libvorbis libwayland libx11 libxau libxcb libxcomposite libxcrypt libxcursor \
+              libxdmcp libxext libxfixes libxi libxkbcommon libxml2 libxrandr libxrender \
+              libxshmfence libxxf86vm linux-api-headers make mangohud mesa-demos mesa \
+              mesa-vulkan-icd-freedreno mesa-vulkan-icd-swrast mpg123 ncurses opengl \
+              openssl osmesa p11-kit patchelf pcre2 perl pkgconf pulseaudio python \
+              python-pip readline rhash strace termux-exec util-linux vulkan-icd-loader \
+              vulkan-tools xcb-proto xcb-util-wm xkeyboard-config xorg-util-macros \
+              xorgproto zlib zstd
+          "
 
-      - name: 打包编译产物
+      # 对应第六个 job：打包产物
+      - name: 提取并打包编译结果
         run: |
-          # 清理并创建解包目录
-          sudo docker exec winlator-rootfs bash -c "rm -rf /root/chanwu && mkdir -p /root/chanwu"
-          # 循环解包所有 deb 文件
-          sudo docker exec winlator-rootfs bash -c "for deb in /root/glibc-packages/output/*.deb; do dpkg-deb -x \"\$deb\" /root/chanwu; done"
-          # 打包 data 目录
-          sudo docker exec winlator-rootfs bash -c "cd /root/chanwu && tar czvf /root/winlator-glibc.tar.gz data"
-          # 将 tar 包复制到主机
-          sudo docker cp winlator-rootfs:/root/winlator-glibc.tar.gz ./winlator-glibc.tar.gz
+          docker exec winlator-rootfs bash -c "
+            mkdir -p /root/chanwu &&
+            dpkg-deb -x /root/glibc-packages/output/*.deb /root/chanwu &&
+            cd /root/chanwu &&
+            tar czvf /root/winlator-glibc.tar.gz data
+          "
 
-      - name: 上传产物到 Artifact
+      # 从容器中复制出最终 tar 包
+      - name: 复制 tar 包到宿主机
+        run: |
+          docker cp winlator-rootfs:/root/winlator-glibc.tar.gz ./
+
+      # 上传到 GitHub Actions Artifacts
+      - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: winlator-glibc
           path: ./winlator-glibc.tar.gz
+
+      # 可选：停止并删除容器以清理资源
+      - name: 清理容器
+        if: always()
+        run: |
+          docker stop winlator-rootfs || true
+          docker rm winlator-rootfs || true
