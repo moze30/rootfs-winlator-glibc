@@ -49,6 +49,7 @@ apply_patch() {
     echo "No Version Patch files=>$1/$2"
   fi
 }
+
 patchelf_fix() {
   LD_RPATH=/data/data/com.winlator/files/imagefs/usr/lib
   LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
@@ -58,13 +59,11 @@ patchelf_fix() {
       echo "Failed to patch $elf_file" >&2
       continue
     }
-    if strip --strip-unneeded "$elf_file"; then
-      echo "Stripped $elf_file successfully."
-    else
-      echo "Warning: Failed to strip $elf_file (might be already stripped or non-standard)." >&2
-    fi
   done
 }
+
+strip_all() { find . -type f -exec file {} \; | grep ELF | cut -d: -f1 | xargs -r strip; }
+
 create_ver_txt() {
   cat >'/data/data/com.winlator/files/imagefs/_version_.txt' <<EOF
 Output Date(UTC+8): $date
@@ -414,6 +413,9 @@ tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
 cd /data/data/com.winlator/files/imagefs/
 rm -rf /data/data/com.winlator/files/imagefs/lib/libgst*
 rm -rf /data/data/com.winlator/files/imagefs/lib/gstreamer-1.0
+#######
+strip_all
+#######
 tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst .; then
