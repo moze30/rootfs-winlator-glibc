@@ -265,6 +265,8 @@ apply_patch glib $glibVer
 echo "Build and Compile glib"
 meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false \
   -Druntime_dir=/data/data/com.winlator/files/imagefs/var/run || exit 1
+meson compile -C builddir || exit 1
+meson install -C builddir
 
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
