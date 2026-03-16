@@ -86,6 +86,7 @@ jobs:
           export mangohudVer=$mangohudVer
           export customTag=$customTag
           export flacVer=$flacVer
+          export glibVer=$glibVer
           #export monoVer=$monoVer
           #export geckoVer=$geckoVer
           EOF
