@@ -72,7 +72,7 @@ jobs:
           mv rootfs-winlator-glibc/mangohud.tar.xz /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/fonts /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/extra /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/lame-3.100 /tmp/archlinux/tmp
+          # mv rootfs-winlator-glibc/lame-3.100 /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/extra-res /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
