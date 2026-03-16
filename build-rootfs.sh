@@ -174,6 +174,8 @@ fi
 
 git clone -b $flacVer https://github.com/xiph/flac.git flac-src || exit 1
 
+git clone -b $glibVer https://github.com/GNOME/glib.git glib-src || exit 1
+
 pip install mako --break-system-package
 
 cd /tmp/xkbcommon-src
