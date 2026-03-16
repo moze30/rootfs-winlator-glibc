@@ -265,6 +265,7 @@ meson install -C builddir
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
+  -Dglib:libmount=disabled \
   -Dgst-full-target-type=shared_library \
   -Dintrospection=disabled \
   -Dgst-full-libraries=app,video,player \
