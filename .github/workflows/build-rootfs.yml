@@ -14,10 +14,6 @@ on:
         description: "输入xz版本："
         required: true
         default: "v5.8.1"
-      inputVorbisVersion:
-        description: "输入vorbis版本："
-        required: true
-        default: "v1.3.7"
       inputFlacVersion:
         description: "输入flac版本："
         required: true
@@ -53,7 +49,6 @@ env:
   xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
   mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
   customTag: ${{ github.event.inputs.inputCustomTag }}
-  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
   glibVer: ${{ github.event.inputs.inputGlibVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
   #monoVer: ${{ github.event.inputs.inputMonoVersion }}
@@ -91,7 +86,6 @@ jobs:
           export mangohudVer=$mangohudVer
           export customTag=$customTag
           export flacVer=$flacVer
-          export vorbisVer=$vorbisVer
           #export monoVer=$monoVer
           #export geckoVer=$geckoVer
           EOF
@@ -126,7 +120,6 @@ jobs:
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
               gstreamer=> ${{ github.event.inputs.inputGstVersion }}
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
-              vorbis=> ${{ github.event.inputs.inputVorbisVersion }}
               glib=> ${{ github.event.inputs.inputGlibVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
