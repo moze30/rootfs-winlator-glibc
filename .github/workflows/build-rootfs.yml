@@ -123,7 +123,6 @@ jobs:
           tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
           body: |
               xz=> ${{ github.event.inputs.inputXzVersion }}
-              libmp3lame=> 3.100
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
               gstreamer=> ${{ github.event.inputs.inputGstVersion }}
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
