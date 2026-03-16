@@ -41,7 +41,7 @@ on:
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
-        default: "g7.1.5-"
+        default: "beta11-g2.39"
 
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
@@ -49,7 +49,7 @@ env:
   xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
   mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
   customTag: ${{ github.event.inputs.inputCustomTag }}
-    # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
   #monoVer: ${{ github.event.inputs.inputMonoVersion }}
   #geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
@@ -64,16 +64,16 @@ jobs:
           curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
           sudo tar xf wlt-bcc.tar.xz -C /tmp
           cd /tmp
-          git clone https://github.com/moze30/rootfs-winlator-glibc.git
-          sudo cp rootfs-winlator-glibc/build-rootfs.sh /tmp/archlinux/bin
-          mv rootfs-winlator-glibc/data.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/patches /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/mangohud.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/fonts /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/extra /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/lame-3.100 /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/extra-res /tmp/archlinux/tmp
+          git clone https://github.com/Waim908/rootfs-custom-winlator.git
+          sudo cp rootfs-custom-winlator/build-rootfs.sh /tmp/archlinux/bin
+          mv rootfs-custom-winlator/data.tar.xz /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/patches /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/mangohud.tar.xz /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/fonts /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/extra /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/lame-3.100 /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/extra-res /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp
@@ -120,15 +120,16 @@ jobs:
               xz=> ${{ github.event.inputs.inputXzVersion }}
               libmp3lame=> 3.100
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
+              libvorbis=> ${{ github.event.inputs.inputVorbisVersion }}
               gstreamer=> ${{ github.event.inputs.inputGstVersion }}
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
-              Rename to `imagefs.txz` put to apk/assets/imagefs.txz
+              Rename to `rootfs.tzst` put to apk/assets/rootfs.tzst
 
           files: |
             /tmp/archlinux/tmp/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
             /tmp/archlinux/tmp/output/output-full-${{ github.event.inputs.inputCustomTag }}.tar.xz
-            /tmp/archlinux/tmp/output/imagefs-${{ github.event.inputs.inputCustomTag }}.tzst
+            /tmp/archlinux/tmp/output/rootfs-${{ github.event.inputs.inputCustomTag }}.tzst
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

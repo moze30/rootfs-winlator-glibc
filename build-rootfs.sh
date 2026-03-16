@@ -18,7 +18,7 @@ export RootDirectories=(
   usr/src
   usr/sbin
   usr/tmp
-  usr/var
+  usr/var/run
 )
 export meson_general_arg=(
   --buildtype=release
@@ -123,7 +123,7 @@ create_imagefs_dir() {
   nowPath=$(pwd)
   imagefsDir=/data/data/com.winlator/files/imagefs/
   for i in ${!RootDirectories[@]}; do
-    mkdir -p $imagefsDir/${RootDirectories[i]}
+    mkdir -p $imagefsDir/${RootDirectories[i]} || exit 1
   done
   cd $imagefsDir
   ln -sf usr/bin
@@ -167,6 +167,24 @@ else
 fi
 
 git clone -b $flacVer https://github.com/xiph/flac.git flac-src || exit 1
+
+
+ if ! git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src; then
+   exit 1
+fi
+
+cd /tmp/vorbis-src
+echo "Build and Compile vorbis"
+if ! ./autogen.sh; then
+  exit 1
+fi
+if ! ./configure --prefix=/data/data/com.winlator/files/imagefs/usr/; then
+  exit 1
+fi
+if ! make -j$(nproc); then
+  exit 1
+fi
+make install
 
 pip install mako --break-system-package
 
@@ -237,6 +255,16 @@ fi
 make install
 
 # (removed vorbis section)
+
+# glib
+cd /tmp/glib-src/
+git submodule update --init --recursive || exit 1
+
+apply_patch glib $glibVer
+
+echo "Build and Compile glib"
+meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false \
+  -Druntime_dir=/data/data/com.winlator/files/imagefs/var/run || exit 1
 
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
