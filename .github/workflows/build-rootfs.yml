@@ -30,6 +30,10 @@ on:
         description: "输入MangoHud版本："
         required: true
         default: "cmod"
+      inputGlibVersion:
+        description: "输入glib版本："
+        required: true
+        default: "2.86.3"
       # inputMonoVersion:
       #   description: "mono版本："
       #   required: true
@@ -49,7 +53,8 @@ env:
   xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
   mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
   customTag: ${{ github.event.inputs.inputCustomTag }}
-    # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
+  glibVer: ${{ github.event.inputs.inputGlibVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
   #monoVer: ${{ github.event.inputs.inputMonoVersion }}
   #geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
@@ -122,6 +127,8 @@ jobs:
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
               gstreamer=> ${{ github.event.inputs.inputGstVersion }}
               xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
+              vorbis=> ${{ github.event.inputs.inputVorbisVersion }}
+              glib=> ${{ github.event.inputs.inputGlibVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
               Rename to `imagefs.txz` put to apk/assets/imagefs.txz
