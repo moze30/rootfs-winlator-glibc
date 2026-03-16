@@ -58,6 +58,11 @@ patchelf_fix() {
       echo "Failed to patch $elf_file" >&2
       continue
     }
+    if strip --strip-unneeded "$elf_file"; then
+      echo "Stripped $elf_file successfully."
+    else
+      echo "Warning: Failed to strip $elf_file (might be already stripped or non-standard)." >&2
+    fi
   done
 }
 create_ver_txt() {
