@@ -1,0 +1,20 @@
+--- ./glib/gspawn-posix.c	2024-10-17 14:08:41.000000000 +0300
++++ ./glib/gspawn-posix.c.org	2024-11-06 23:25:35.901642834 +0300
+@@ -1404,7 +1404,7 @@
+        * * what to search if PATH is unset. POSIX may, dunno.
+        * */
+ 
+-      chosen_search_path = "/bin:/usr/bin:.";
++      chosen_search_path = "/data/data/com.winlator/files/imagefs/usr/bin:.";
+     }
+ 
+   if (search_path || search_path_from_envp)
+@@ -1815,7 +1815,7 @@
+   if (argc + 2 > argv_buffer_len)
+     return FALSE;
+ 
+-  argv_buffer[0] = (char *) "/bin/sh";
++  argv_buffer[0] = (char *) "/data/data/com.winlator/files/imagefs/usr/bin/sh";
+   argv_buffer[1] = (char *) file;
+   while (argc > 0)
+     {
