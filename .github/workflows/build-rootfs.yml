@@ -9,7 +9,7 @@ on:
       inputGstVersion:
         description: "输入gstreamer版本："
         required: true
-        default: "1.27.2"
+        default: "1.26.11"
       inputXzVersion:
         description: "输入xz版本："
         required: true

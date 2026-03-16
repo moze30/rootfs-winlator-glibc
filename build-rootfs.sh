@@ -123,7 +123,7 @@ else
   cat /tmp/init.sh
   source /tmp/init.sh
 fi
-pacman -R --noconfirm flac lame
+# pacman -R --noconfirm flac
 create_imagefs_dir() {
   mkdir -p /data/data/com.winlator/files/imagefs/
   nowPath=$(pwd)
