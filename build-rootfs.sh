@@ -350,13 +350,7 @@ patchelf_fix
 ##############
 create_ver_txt
 ##############
-clean_old_depends
-##############
-cd usr/lib
-ln -sf libvorbis.so.0 libvorbis.so.0.4.9
-ln -sf libvorbisenc.so.2 libvorbisenc.so.2.0.12
-ln -sf libvorbisfile.so.3 libvorbisfile.so.3.3.8
-##############
+
 if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-lite-${customTag}.tar.xz .; then
   exit 1
 fi
@@ -412,10 +406,18 @@ rm -rf /data/data/com.winlator/files/imagefs/
 create_imagefs_dir
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
 cd /data/data/com.winlator/files/imagefs/
+##############
+clean_old_depends
+##############
+cd usr/lib
+ln -sf libvorbis.so.0 libvorbis.so.0.4.9
+ln -sf libvorbisenc.so.2 libvorbisenc.so.2.0.12
+ln -sf libvorbisfile.so.3 libvorbisfile.so.3.3.8
+##############
 rm -rf /data/data/com.winlator/files/imagefs/lib/libgst*
 rm -rf /data/data/com.winlator/files/imagefs/lib/gstreamer-1.0
 #######
-strip_all
+#strip_all
 #######
 tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
