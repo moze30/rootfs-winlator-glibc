@@ -257,7 +257,7 @@ git submodule update --init --recursive || exit 1
 apply_patch glib $glibVer
 
 echo "Build and Compile glib"
-meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false \
+meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false   -Dglib:libmount=disabled \
   -Druntime_dir=/data/data/com.winlator/files/imagefs/var/run || exit 1
 meson compile -C builddir || exit 1
 meson install -C builddir
@@ -265,7 +265,6 @@ meson install -C builddir
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
-  -Dglib:libmount=disabled \
   -Dgst-full-target-type=shared_library \
   -Dintrospection=disabled \
   -Dgst-full-libraries=app,video,player \
