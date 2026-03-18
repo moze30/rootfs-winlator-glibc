@@ -257,7 +257,7 @@ git submodule update --init --recursive || exit 1
 apply_patch glib $glibVer
 
 echo "Build and Compile glib"
-meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false \
+meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false   -Dglib:libmount=disabled \
   -Druntime_dir=/data/data/com.winlator/files/imagefs/var/run || exit 1
 meson compile -C builddir || exit 1
 meson install -C builddir
@@ -265,7 +265,6 @@ meson install -C builddir
 cd /tmp/gst-src
 echo "Build and Compile gstreamer"
 meson setup builddir ${meson_general_arg[@]} \
-  -Dglib:libmount=disabled \
   -Dgst-full-target-type=shared_library \
   -Dintrospection=disabled \
   -Dgst-full-libraries=app,video,player \
@@ -435,6 +434,8 @@ ln -sf libvorbis.so.0 libvorbis.so.0.4.9
 ln -sf libvorbisenc.so.2 libvorbisenc.so.2.0.12
 ln -sf libvorbisfile.so.3 libvorbisfile.so.3.3.8
 ##############
+cd /data/data/com.winlator/files/imagefs/
+##############
 rm -rf /data/data/com.winlator/files/imagefs/lib/libgst*
 rm -rf /data/data/com.winlator/files/imagefs/lib/gstreamer-1.0
 #######
@@ -442,6 +443,6 @@ rm -rf /data/data/com.winlator/files/imagefs/lib/gstreamer-1.0
 #######
 tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
-if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst .; then
+if ! tar -I 'zstd -T$(nproc) -12' -cf /tmp/output/imagefs-${customTag}.tzst .; then
   exit 1
 fi
