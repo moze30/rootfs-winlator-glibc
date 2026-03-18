@@ -280,11 +280,16 @@ meson setup builddir ${meson_general_arg[@]} \
   -Dges=disabled \
   -Dpython=disabled \
   -Ddevtools=disabled \
+  -Drtsp_server=disabled \
+  -Dlibnice=disabled \
   -Dgstreamer:check=disabled \
   -Dgstreamer:benchmarks=disabled \
   -Dgstreamer:libunwind=disabled \
   -Dgstreamer:libdw=disabled \
   -Dgstreamer:bash-completion=disabled \
+  -Dgst-plugins-base:tcp=disabled \
+  -Dgst-plugins-base:typefind=disabled \
+  -Dgst-plugins-base:gio=disabled \
   -Dgst-plugins-good:cairo=disabled \
   -Dgst-plugins-good:gdk-pixbuf=disabled \
   -Dgst-plugins-good:oss=disabled \
@@ -294,9 +299,14 @@ meson setup builddir ${meson_general_arg[@]} \
   -Dgst-plugins-good:jack=disabled \
   -Dgst-plugins-good:pulse=enabled \
   -Dgst-plugins-good:adaptivedemux2=disabled \
-  -Dgst-plugins-good:v4l2=disabled \
   -Dgst-plugins-good:libcaca=disabled \
   -Dgst-plugins-good:mpg123=enabled \
+  -Dgst-plugins-good:multifile=disabled \
+  -Dgst-plugins-good:rtp=disabled \
+  -Dgst-plugins-good:rtpmanager=disabled \
+  -Dgst-plugins-good:rtsp=disabled \
+  -Dgst-plugins-good:soup=disabled \
+  -Dgst-plugins-good:udp=disabled \
   -Dgst-plugins-base:examples=disabled \
   -Dgst-plugins-base:alsa=enabled \
   -Dgst-plugins-base:pango=disabled \
@@ -333,6 +343,17 @@ meson setup builddir ${meson_general_arg[@]} \
   -Dgst-plugins-bad:opus=disabled \
   -Dgst-plugins-bad:webrtc=disabled \
   -Dgst-plugins-bad:webrtcdsp=disabled \
+  -Dgst-plugins-bad:debugutils=disabled \
+  -Dgst-plugins-bad:librfb=disabled \
+  -Dgst-plugins-bad:rist=disabled \
+  -Dgst-plugins-bad:rtmp2=disabled \
+  -Dgst-plugins-bad:rtp=disabled \
+  -Dgst-plugins-bad:srtp=disabled \
+  -Dgst-plugins-bad:sdp=disabled \
+  -Dgst-plugins-bad:tensordecoders=disabled \
+  -Dgst-plugins-bad:unixfd=disabled \
+  -Dgst-plugins-bad:cuda-nvmm=disabled \
+  -Dgst-plugins-ugly:asfdemux=disabled \
   -Dpackage-origin="[rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)" || exit 1
 if [[ ! -d builddir ]]; then
   exit 1
