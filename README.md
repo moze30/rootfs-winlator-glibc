@@ -1,4 +1,4 @@
-# rootfs-custom-winlator
+# Root Filesystem Customized
 
 winlator glibc 7.1.x 定制版imagefs，这是一个用于补全原版winlator的项目，适用于所有修改版本与原版。
 
@@ -242,3 +242,7 @@ bilibili:
 [msyh/simsun](https://github.com/CroesusSo/msyh)
 
 [msyh](https://github.com/fernvenue/microsoft-yahei)
+
+#### 补丁参考！Thanks！
+
+(glibc-package)[https://github.com/termux-pacman/glibc-packages]

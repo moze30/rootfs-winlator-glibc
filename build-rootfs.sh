@@ -366,6 +366,7 @@ export date=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
 echo "Package"
 mkdir /tmp/output
 cd /data/data/com.winlator/files/imagefs/
+rm -rf lib/*.a
 patchelf_fix
 ##############
 create_ver_txt
@@ -427,12 +428,18 @@ create_imagefs_dir
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
 cd /data/data/com.winlator/files/imagefs/
 ##############
-clean_old_depends
+#clean_old_depends
 ##############
 cd usr/lib
+
 ln -sf libvorbis.so.0 libvorbis.so.0.4.9
 ln -sf libvorbisenc.so.2 libvorbisenc.so.2.0.12
 ln -sf libvorbisfile.so.3 libvorbisfile.so.3.3.8
+##############
+echo "Listing usr/lib:"
+echo "==============================="
+ls -l
+echo "==============================="
 ##############
 cd /data/data/com.winlator/files/imagefs/
 ##############
