@@ -210,7 +210,7 @@ bilibili:
 
 [mangohud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)
 
-[gstreamer](https://github.com/GStreamer/gstreamer)
+- remake  [gstreamer](https://github.com/GStreamer/gstreamer)
 
 [MangoHud](https://github.com/flightlessmango/MangoHud)
 
@@ -218,11 +218,10 @@ bilibili:
 
 [xkbcommon](https://github.com/xkbcommon/libxkbcommon)
 
-[mp3lame](https://lame.sourceforge.io)
+- update [flac](https://github.com/xiph/flac)
 
-[flac](https://github.com/xiph/flac)
+- update [glib](https://github.com/GNOME/glib)
 
-[vorbis](https://github.com/xiph/vorbis)
 
 #### Wine/windows环境
 
