@@ -67,7 +67,7 @@ jobs:
           git clone https://github.com/moze30/rootfs-winlator-glibc.git
           sudo cp rootfs-winlator-glibc/build-rootfs.sh /tmp/archlinux/bin
           mv rootfs-winlator-glibc/data.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/patches /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/mangohud.tar.xz /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/fonts /tmp/archlinux/tmp

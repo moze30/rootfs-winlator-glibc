@@ -108,7 +108,7 @@ EOF
 clean_old_depends () {
   rm -rf /data/data/com.winlator/files/imagefs/usr/lib/libFLAC++.so.10*
   rm -rf /data/data/com.winlator/files/imagefs/usr/lib/libFLAC.so.12*
-  rm -rf /data/data/com.winlator/files/imagefs/usr/lib/lib/libglib-2.0.so.0.8000.3 
+  rm -rf /data/data/com.winlator/files/imagefs/usr/lib/lib/libglib-2.0.so.0.8000.3
 }
 
 ################
@@ -306,6 +306,7 @@ meson setup builddir ${meson_general_arg[@]} \
   -Dgst-plugins-good:rtsp=disabled \
   -Dgst-plugins-good:soup=disabled \
   -Dgst-plugins-good:udp=disabled \
+  -Dgst-plugins-good:aalib=disabled \
   -Dgst-plugins-base:examples=disabled \
   -Dgst-plugins-base:alsa=enabled \
   -Dgst-plugins-base:pango=disabled \
@@ -352,6 +353,7 @@ meson setup builddir ${meson_general_arg[@]} \
   -Dgst-plugins-bad:tensordecoders=disabled \
   -Dgst-plugins-bad:unixfd=disabled \
   -Dgst-plugins-bad:cuda-nvmm=disabled \
+  -Dgst-plugins-bad:fluidsynth=disabled \
   -Dgst-plugins-ugly:asfdemux=disabled \
   -Dpackage-origin="[rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)" || exit 1
 if [[ ! -d builddir ]]; then
@@ -378,47 +380,14 @@ fi
 
 cd /tmp
 
-#tar -xf data.tar.xz -C /data/data/com.winlator/files/imagefs/
-tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/imagefs/
-#if [[ -d fonts ]]; then
-#  cp -r -p fonts /data/data/com.winlator/files/imagefs/usr/share
-#else
-#  echo "fonts no such dir"
-#fi
-#
-#########
-# Extra #
-#########
+tar -xf data.tar.xz -C /data/data/com.winlator/files/imagefs/
+rm -rf /data/data/com.winlator/files/imagefs/.BUILDINFO
+rm -rf /data/data/com.winlator/files/imagefs/.MTREE
+rm -rf /data/data/com.winlator/files/imagefs/.PKGINFO
+tar -xf tzdata-*-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/imagefs/
 
-if [[ -d extra ]]; then
-  cp -r -p extra /data/data/com.winlator/files/imagefs/
-else
-  echo "extra no such dir"
-fi
-if [[ $installAddons == 1 ]]; then
-  if [[ -d extra-res ]]; then
-    cp -r -p extra-res /data/data/com.winlator/files/imagefs/
-    cd /data/data/com.winlator/files/imagefs/extra-res/
-    # 10.3.0 https://github.com/wine-mono/wine-mono/releases/download/wine-mono-10.3.0/wine-mono-10.3.0-x86.msi
-    wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${monoVer}/wine-mono-${monoVer}-x86.msi || exit 1
-    # https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86_64.msi
-    wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86.msi
-    wget https://dl.winehq.org/wine/wine-gecko/${geckoVer}/wine-gecko-${geckoVer}-x86_64.msi
-  else
-    echo "extra-res no such dir"
-    exit 1
-  fi
-else
-  if [[ -d extra-res ]]; then
-    cp -r -p extra-res /data/data/com.winlator/files/imagefs/
-  else
-    echo "extra-res no such dir"
-    exit 1
-  fi
-fi
 
 cd /data/data/com.winlator/files/imagefs/
-#create_ver_txt
 if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full-${customTag}.tar.xz .; then
   exit 1
 fi
@@ -443,12 +412,12 @@ echo "==============================="
 ##############
 cd /data/data/com.winlator/files/imagefs/
 ##############
-rm -rf /data/data/com.winlator/files/imagefs/lib/libgst*
-rm -rf /data/data/com.winlator/files/imagefs/lib/gstreamer-1.0
+rm -rf /data/data/com.winlator/files/imagefs/usr/lib/libgst*
+rm -rf /data/data/com.winlator/files/imagefs/usr/lib/gstreamer-1.0/
 #######
 #strip_all
 #######
-tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
+#tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst .; then
   exit 1
