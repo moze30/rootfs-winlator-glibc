@@ -417,7 +417,7 @@ rm -rf /data/data/com.winlator/files/imagefs/usr/lib/gstreamer-1.0/
 #######
 #strip_all
 #######
-#tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
+tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst .; then
   exit 1
