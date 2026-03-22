@@ -381,10 +381,11 @@ fi
 cd /tmp
 
 tar -xf data.tar.xz -C /data/data/com.winlator/files/imagefs/
+
+tar -xf tzdata-*-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/imagefs/
 rm -rf /data/data/com.winlator/files/imagefs/.BUILDINFO
 rm -rf /data/data/com.winlator/files/imagefs/.MTREE
 rm -rf /data/data/com.winlator/files/imagefs/.PKGINFO
-tar -xf tzdata-*-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/imagefs/
 
 
 cd /data/data/com.winlator/files/imagefs/
@@ -401,9 +402,9 @@ cd /data/data/com.winlator/files/imagefs/
 ##############
 cd usr/lib
 
-ln -sf libvorbis.so.0 libvorbis.so.0.4.9
-ln -sf libvorbisenc.so.2 libvorbisenc.so.2.0.12
-ln -sf libvorbisfile.so.3 libvorbisfile.so.3.3.8
+ln -sf libvorbis.so.0.4.9 libvorbis.so.0
+ln -sf libvorbisenc.so.2.0.12 libvorbisenc.so.2
+ln -sf libvorbisfile.so.3.3.8 libvorbisfile.so.3
 ##############
 echo "Listing usr/lib:"
 echo "==============================="
