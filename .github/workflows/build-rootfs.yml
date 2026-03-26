@@ -3,6 +3,8 @@ name: Winlator Rootfs Build (use BCC)
 permissions:
   contents: write
 
+  # https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/
+  # https://xorg.freedesktop.org/releases/individual/lib/
 on:
   workflow_dispatch:
     inputs:

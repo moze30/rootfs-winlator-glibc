@@ -222,6 +222,10 @@ bilibili:
 
 - update [glib](https://github.com/GNOME/glib)
 
+- add [xkb-config](https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/)
+
+- [*others x11 deps*:](https://xorg.freedesktop.org/releases/individual/lib/)
+
 
 #### Wine/windows环境
 
