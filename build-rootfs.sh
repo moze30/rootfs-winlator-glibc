@@ -281,6 +281,7 @@ meson setup builddir ${meson_general_arg[@]} \
   -Ddevtools=disabled \
   -Drtsp_server=disabled \
   -Dlibnice=disabled \
+  -Dgtk=disabled \
   -Dgstreamer:check=disabled \
   -Dgstreamer:benchmarks=disabled \
   -Dgstreamer:libunwind=disabled \
