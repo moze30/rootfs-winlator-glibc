@@ -126,6 +126,7 @@ jobs:
               glib=> ${{ github.event.inputs.inputGlibVersion }}
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
+              more info look '_version_.txt' for imagefs
               Rename to `imagefs.txz` put to apk/assets/imagefs.txz
 
           files: |

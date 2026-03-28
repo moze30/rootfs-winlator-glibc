@@ -1,1 +1,0 @@
-rd "C:\ProgramData\Microsoft\Windows\Start Menu\99.extra"

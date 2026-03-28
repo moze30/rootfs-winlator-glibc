@@ -1,1 +1,0 @@
-reg delete "HKCU\Software\Wine\DllOverrides" /v "version" /f

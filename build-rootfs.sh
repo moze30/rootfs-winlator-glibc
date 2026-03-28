@@ -64,15 +64,29 @@ patchelf_fix() {
 
 strip_all() { find . -type f -exec file {} \; | grep ELF | cut -d: -f1 | xargs -r strip; }
 
+wget_source() {
+  command -v wget || exit 1
+  local target_package=$(basename $1)
+  wget $1 || { echo "下载失败" && exit 1;}
+  local target_dir=$(tar tf $target_package | head -n1)
+  tar xvf $target_package || { echo "解压失败" && exit 1;}
+  cd $target_dir
+}
+
 create_ver_txt() {
   cat >'/data/data/com.winlator/files/imagefs/_version_.txt' <<EOF
 Output Date(UTC+8): $date
 Version:
   xz=> $xzVer
+  flac=> $flacVer
+  glib=> $glibVer
   gstreamer=> $gstVer
   xkbcommon=> $xkbcommonVer
   mangohud=> $mangohudVer
   imagefs-tag=> $customTag
+  Extra_URL:
+    ${extraURL[@]}
+
 GitHub:
   [Waim908/rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)
 GlibcMod:
@@ -259,6 +273,21 @@ apply_patch glib $glibVer
 echo "Build and Compile glib"
 meson setup builddir ${meson_general_arg[@]} -Dglib_debug=disabled -Ddocumentation=false -Dintrospection=disabled -Dman-pages=disabled -Dselinux=disabled -Dtests=false   -Dlibmount=disabled \
   -Druntime_dir=/data/data/com.winlator/files/imagefs/var/run || exit 1
+meson compile -C builddir || exit 1
+meson install -C builddir
+
+# xkeyboard-config
+wget_source https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.47.tar.xz
+meson setup builddir ${meson_general_arg[@]} \
+  -Dcompat-rules=true \
+  -Dxorg-rules-symlinks=true \
+  -Dnls=false || exit 1
+meson compile -C builddir || exit 1
+meson install -C builddir
+
+# libxkb-file
+wget_source https://xorg.freedesktop.org/releases/individual/lib/libxkbfile-1.2.0.tar.xz
+meson setup builddir ${meson_general_arg[@]}  || exit 1
 meson compile -C builddir || exit 1
 meson install -C builddir
 

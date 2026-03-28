@@ -1,1 +1,0 @@
-reg add "HKCU\Software\Wine\DllOverrides" /v "version" /t REG_SZ /d "native,builtin" /f
